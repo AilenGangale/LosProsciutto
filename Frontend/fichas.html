@@ -17,6 +17,47 @@ Por dentro en total 10 divs
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Título de la Página</title>
+
+    <style>
+
+        .ficha{
+            width: 250px;
+            height: 450px;
+            border: 1px solid black;
+        }
+        .textTitulo{
+            width:250px;
+            height: 25px;
+            background: #FFEDEB;
+        }
+        .numeroOrden{
+            width:250px;
+            height:50px;
+            text-align: center;
+            background: #FFEDEB;
+        }
+        .barras {
+            width: 250px;
+            height: 300px;
+             /* Asegúrate de especificar el estilo del borde */
+            display: flex; /* Usar flexbox para distribuir las barras horizontalmente */
+            flex-direction: column;
+            border: 1px solid black;
+        }
+        
+        .blanca, .rosa {
+            flex: 1; /* Permite que las barras ocupen el mismo espacio */
+            width: 100%; /* Hace que las barras ocupen toda la altura del contenedor */
+        }
+        
+        .blanca {
+            background: #FFEDEB;
+        }
+        
+        .rosa {
+            background: #FFBAC4;
+        }
+    </style>
 </head>
 <body>
     <!-- Aquí va el contenido de la página -->
