@@ -22,32 +22,41 @@ Por dentro en total 10 divs
 
         .ficha{
             width: 250px;
-            height: 450px;
-            border: 1px solid black;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
         .textTitulo{
             width:250px;
             height: 25px;
+            font-size:20px;
             background: #FFEDEB;
-        }
+            color:#fa8f9f;
+            border-bottom: 2px dotted #FFBAC4;
+            
+}
+        
         .numeroOrden{
             width:250px;
             height:50px;
             text-align: center;
             background: #FFEDEB;
-        }
+            color:#fa8f9f;
+            font-size: 40px;
+            border-bottom: 2px dotted #FFBAC4;
+            
+}
         .barras {
             width: 250px;
             height: 300px;
-             /* Asegúrate de especificar el estilo del borde */
-            display: flex; /* Usar flexbox para distribuir las barras horizontalmente */
+            display: flex; 
             flex-direction: column;
-            border: 1px solid black;
+           
         }
         
         .blanca, .rosa {
-            flex: 1; /* Permite que las barras ocupen el mismo espacio */
-            width: 100%; /* Hace que las barras ocupen toda la altura del contenedor */
+            flex: 1;
+            
+            width: 100%; 
         }
         
         .blanca {
@@ -60,13 +69,10 @@ Por dentro en total 10 divs
     </style>
 </head>
 <body>
-    <!-- Aquí va el contenido de la página -->
-         <!-- Aquí va el contenido de la página -->
+    
     <div class="ficha">
         <div class="textTitulo">Papas Pizza</div>
-        <div class="numeroOrden">
-            <h1>8</h1>
-        </div>
+        <div class="numeroOrden">8</div>
         
         <div class="barras">
             <div class="blanca"></div>
@@ -78,5 +84,7 @@ Por dentro en total 10 divs
             <div class="blanca"></div>
         </div>
     </div>
+
+    
 </body>
 </html>
