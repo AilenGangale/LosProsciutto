@@ -3,6 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+def configure_database(app):
+    db.init_app(app)
+    with app.app_context():
+        db.create_all()
+
 class Cliente(db.Model):
     __tablename__ = 'clientes'
     id = db.Column(db.Integer,primary_key =True)
