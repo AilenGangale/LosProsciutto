@@ -32,18 +32,56 @@ def all_clientes():
         return jsonify(clientes_data)
     except:
         return jsonify({"error": "No se pudieron recuperar los datos"})
-    
-def data(id_conejo):
-  conejo= Conejo.query.get(id_conejo)
-  conejo_data ={
-    "id" : conejo.id,
-    "nombre": comejo.nombre,
-    "plata ": conejo.plata
-  }
-  return conejo_data
-  
 
-      
+# @app.route("/cliente/<id_cliente>")
+# def data(id_cliente):
+#   cliente= Cliente.query.where(Cliente.id = id_cliente).all()
+#   print('Cliente:', cliente)
+  
+#   return id_cliente
+
+@app.route("/clientes/<id_cliente>") 
+def data(id_cliente):
+  cliente= Cliente.query.get(id_cliente)
+  cliente_data ={
+    "id" : cliente.id,
+    "nombre": cliente.nombre,
+    "plata ": cliente.plata
+  }
+  return cliente_data
+
+
+#/clientes --> POST 
+@app.route('/clientes', methods=['POST'])
+def nuevo_cliente():
+    try:
+        data = request.json
+        nuevo_nombre = data.get("nombre")
+        nueva_plata = data.get("plata")
+        
+        nuevo_cliente = Cliente(nombre=nuevo_nombre, plata=nueva_plata)
+        
+        db.session.add(nuevo_cliente)
+        db.session.commit()
+        
+        return jsonify({
+            'cliente': {
+                'id': nuevo_cliente.id,
+                'nombre': nuevo_cliente.nombre,
+                'plata': nuevo_cliente.plata
+            }
+        })
+    
+    except:
+        return jsonify({
+            'message': 'No se pudo crear el cliente'
+        }), 500
+    
+
 
 if __name__ == '__main__':
+    print("Starting server...")
+    with app.app_context():
+        db.create_all()  # Crear todas las tablas definidas en los modelos
     app.run(host='0.0.0.0', debug=True, port=8000)
+    print("Server started")
