@@ -85,3 +85,6 @@ if __name__ == '__main__':
         db.create_all()  # Crear todas las tablas definidas en los modelos
     app.run(host='0.0.0.0', debug=True, port=8000)
     print("Server started")
+
+
+    
