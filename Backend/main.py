@@ -1,5 +1,7 @@
 
 from flask import Flask, render_template, request, jsonify
+#pip install psycopg2
+#pip install flask-cors
 from flask_cors import CORS
 from models import db, configure_database, Cliente, Pizza, Orden
 import datetime
