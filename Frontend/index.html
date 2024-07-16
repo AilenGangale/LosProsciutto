@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <style>
+        /* Estilos CSS aquí */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Papas's Pizza</h1>
+    
+    <div id="clientes">Clientes:</div>
+
+    <script>
+        // Función saludar: muestra un mensaje de alerta al cargar la página
+        function saludar() {
+            alert('Hola desde JavaScript!');
+        }
+        // Llamada a la función saludar al cargar la página
+        saludar();
+
+        // Función response_received: convierte la respuesta del servidor en formato JSON
+        function response_received(response) {
+            return response.json();
+        }
+
+        // Función parse_data: procesa y muestra los datos obtenidos del servidor
+        function parse_data(content) {
+            console.log(content);  // Muestra los datos en la consola del navegador
+
+            const container = document.getElementById("clientes");  // Obtiene el contenedor con id "clientes"
+
+            // Itera sobre los datos obtenidos
+            for (let index = 0; index < content.length; index++) {
+                const item = document.createElement("p");  // Crea un elemento <p> para cada objeto en content
+                // Define el HTML interno del elemento <p> con un enlace dinámico usando los datos del objeto
+                    item.innerHTML = `<a href="clientes?id=${content[index].id}">${content[index].nombre}</a> - Plata ${content[index].plata}`;
+
+               
+                container.append(item);  // Agrega el elemento <p> al contenedor "clientes"
+            }
+        }
+
+        // Función request_error: maneja los errores en la solicitud fetch
+        function request_error(error) {
+            console.log("ERROR");  // Muestra "ERROR" en la consola
+            console.log(error);   // Muestra el error específico en la consola
+        }
+
+        // Realiza una solicitud fetch para obtener datos del servidor
+        fetch("http://localhost:5000/clientes")
+            .then(response_received)  // Procesa la respuesta para convertirla en JSON
+            .then(parse_data)  // Procesa los datos obtenidos y los muestra en la página
+            .catch(request_error);  // Captura y maneja cualquier error que ocurra durante la solicitud
+    </script>
+</body>
+</html>
