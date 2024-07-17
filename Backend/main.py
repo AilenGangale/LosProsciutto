@@ -47,13 +47,13 @@ def all_clientes():
 
 @app.route("/clientes/<id_cliente>") 
 def data(id_cliente):
-  cliente= Cliente.query.get(id_cliente)
-  cliente_data ={
+    cliente= Cliente.query.get(id_cliente)
+    cliente_data = {
     "id" : cliente.id,
     "nombre": cliente.nombre,
     "plata ": cliente.plata
-  }
-  return cliente_data
+    }
+    return jsonify(cliente_data)
 
 
 #/clientes --> POST 
@@ -153,6 +153,3 @@ if __name__ == '__main__':
         db.create_all()  # Crear todas las tablas definidas en los modelos
     app.run(host='0.0.0.0', debug=True, port=8000)
     print("Server started")
-
-
-    
