@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, jsonify
 from models import db, configure_database, Cliente, Pizza, Orden
 import datetime
 
-app = Flask(__name__, template_folder="Frontend/templates", static_folder="Frontend")
+app = Flask(__name__, template_folder="../Frontend", static_folder="Frontend")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:111276@localhost:5432/papaspizza'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -79,7 +79,7 @@ def nuevo_cliente():
         }), 500
     
 
-@app.route("/clientes/<id_cliente>/ordenes", methods=["GET"])
+@app.route("/clientes/<id_cliente>/ordenes", methods=['GET'])
 def ordenes_de_un_cliente(id_cliente):
 	try:
 		ordenes = db.session.query(Orden, Pizza
@@ -100,10 +100,10 @@ def ordenes_de_un_cliente(id_cliente):
 	except:
 		return jsonify({"mensaje": "No hay ordenes."})
 		
-@app.route("/clientes/id/nueva_orden/<id_tipo_orden>", method=["POST"])
+@app.route("/clientes/id/nueva_orden/<id_tipo_orden>", methods=['POST'])
 def nueva_orden(id_cliente, id_pizza):
     try:
-        tipo_orden = Pizza.query.get(id_pizza)
+        pizza = Pizza.query.get(id_pizza)
         #fecha_cosecha = datetime.datetime.now() + datetime.timedelta(minutes = pizza.tiempo_cosecha) #le suma el tiempo de ese tipo de granja
         #nueva_orden = Orden(conejo_id = id_conejo, tipo_granja_id = id_pizza, fecha_cosecha = fecha_cosecha)
         nueva_orden = Orden(cliente_id = id_cliente, pizza_id = id_pizza)
@@ -123,7 +123,7 @@ def nueva_orden(id_cliente, id_pizza):
         return jsonify({"mensaje": "No se pudo crear la orden."}),500
 	
 #dado el id de la granja que le llega por parámetro busca la granja en la base de datos, busca el conejo en la base de datos y busca el tipo de granja en la base de datos. Tiene 3 variables, hace los cambios necesarios (si cosecho al conejo le sumo plata y pongo que la granja está cosechada). Luego se añaden esas cosas a la sesión y commiteamos. Devolvemos como retorno del post la nueva plata del conejo para poder actualizar dinámicamente la página
-@app.route("/retirar/<id_orden>", method=["POST"])
+@app.route("/retirar/<id_orden>", methods=['POST'])
 def retirar_orden(id_orden):
 	try:
 		orden = Orden.query.get(id_orden)
