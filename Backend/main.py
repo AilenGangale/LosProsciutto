@@ -1,5 +1,8 @@
 
 from flask import Flask, render_template, request, jsonify
+#pip install psycopg2
+#pip install flask-cors
+from flask_cors import CORS
 from models import db, configure_database, Cliente, Pizza, Orden
 import datetime
 
@@ -8,10 +11,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:111276@localhost:
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 configure_database(app)
+CORS(app) 
 
 @app.route('/')
-def hello_world():
-    return 'Hello world'
+def home():
+    return render_template('index.html')
 
 #Devolver todos los clientes
 @app.route('/clientes/', methods=['GET'])
