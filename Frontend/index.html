@@ -35,7 +35,7 @@
             for (let index = 0; index < content.length; index++) {
                 const item = document.createElement("p");  // Crea un elemento <p> para cada objeto en content
                 // Define el HTML interno del elemento <p> con un enlace dinámico usando los datos del objeto
-                item.innerHTML = `<a href="clientes?id=${content[index].id}" target="_blank">${content[index].nombre}</a> - Plata ${content[index].plata}`;
+                item.innerHTML = `<a href="clientes/${content[index].id_cliente}" target="_blank">${content[index].nombre}</a> - Plata ${content[index].plata}`;
 
                
                 container.append(item);  // Agrega el elemento <p> al contenedor "clientes"
