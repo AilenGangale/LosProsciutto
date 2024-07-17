@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-
+import Datetime
 db = SQLAlchemy()
 
 def configure_database(app):
@@ -12,16 +12,7 @@ class Cliente(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(255), nullable=False)
     plata = db.Column(db.Integer, nullable=False)
-    #fecha_creacion = db.Column(db.DateTime, default=datetime.datetime.now)
-
-class Pizza(db.Model):
-    __tablename__ = 'pizzas'
-    id = db.Column(db.Integer, primary_key=True)
-    tipo_pizza = db.Column(db.String(255), nullable=False)
-    costo_pizza = db.Column(db.Integer, nullable=False)
-    #tiempo_coccion = db.Column(db.Integer, nullable=False)
-    #fecha_creacion = db.Column(db.DateTime, default=datetime.datetime.now)
-
+    
 class Orden(db.Model):
     __tablename__ = 'ordenes'
     id = db.Column(db.Integer, primary_key=True)
@@ -29,5 +20,18 @@ class Orden(db.Model):
     pizza_id = db.Column(db.Integer, db.ForeignKey('pizzas.id'))
     costo_total = db.Column(db.Integer, nullable=False)
     estado = db.Column(db.String(50), nullable=False)
-    #fecha_entrega = db.Column(db.DateTime, nullable=False)
-    #fecha_creacion = db.Column(db.DateTime, default=datetime.datetime.now)
+    #Agrego los campos de fechas
+    fecha_creacion = db.Column(db.DateTime, default= datetime.datetime.now)
+    fecha_entrega = db.Column(db.DateTime, nullable=False)
+    
+
+class Pizza(db.Model):
+    __tablename__ = 'pizzas'
+    id = db.Column(db.Integer, primary_key=True)
+    #Cambio el tipo de pizza por el sabor
+    sabor = db.Column(db.String(255), nullable=False)
+    costo_pizza = db.Column(db.Integer, nullable=False)
+    #Agrego tiempo de coccion comentado
+    tiempo_coccion = db.Column(db.Integer, nullable=False)
+    
+
