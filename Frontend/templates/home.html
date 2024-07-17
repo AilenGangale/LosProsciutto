@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio</title>
     <style>
-        /* Estilos CSS aquí */
+        
         body {
             font-family: Arial, sans-serif;
-            background-color: #333; /* Cambia el color de fondo a oscuro */
-            color: #fff; /* Cambia el color del texto a claro para mejor legibilidad */
-            padding: 20px; /* Añade un espacio interno para separar el contenido del borde */
-            text-align: center; /* Centra el texto dentro del cuerpo */
+            background-color: #333; 
+            color: #fff; 
+            padding: 20px; 
+            text-align: center; 
         }
 
         h1 {
-            color: #ffc107; /* Cambia el color del encabezado h1 a amarillo */
-            font-size: 2em; /* Ajusta el tamaño del texto del encabezado */
+            color: #ffc107; 
+            font-size: 2em; 
         }
 
         #clientes {
@@ -24,9 +24,9 @@
         }
 
         #clientes img {
-            width: 300px; /* Ajusta el ancho de la imagen */
-            height: auto; /* Permite que la altura se ajuste automáticamente según el ancho */
-            border-radius: 50%; /* Para una imagen redonda, si es aplicable */
+            width: 300px; 
+            height: auto; /* La altura se ajusta automáticamente según el ancho */
+            border-radius: 50%; 
             margin-bottom: 10px;
         }
 
@@ -36,8 +36,8 @@
 
         #botones button {
             margin: 0 10px;
-            padding: 15px 30px; /* Ajusta el tamaño del botón */
-            font-size: 1.2em; /* Ajusta el tamaño del texto del botón */
+            padding: 15px 30px; 
+            font-size: 1.2em; 
             background-color: #ffc107;
             color: #333;
             border: none;
@@ -50,7 +50,7 @@
     <h1>Papas's Pizza</h1>
     
     <div id="clientes">
-        <img src="/home/mariano/Descargas/logo_pizza.png" alt="Logo de Papas's Pizza"> <!-- Descargar imagen https://images.app.goo.gl/PPJWC33SxKQ7dfbbA y reemplazar con su ruta */ -->
+        <img src="{{ url_for('static', filename='images/logo_pizza.png') }}">   <!--  alt="Logo de Papas's Pizza" -->
         <div id="botones">
             <button onclick="nuevoUsuario()">Nuevo usuario</button>
             <button onclick="usuarioExistente()">Usuario existente</button>
@@ -59,12 +59,10 @@
 
     <script>
         function nuevoUsuario() {
-            // Acción para nuevo usuario
             console.log("Nuevo usuario");
         }
 
         function usuarioExistente() {
-            // Acción para usuario existente
             console.log("Usuario existente");
         }
     </script>
