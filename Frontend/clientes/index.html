@@ -4,8 +4,53 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.8">
 	<title>Papa's pizzeria</title>
-	<link href="" rel="stylesheet" crossorigin="anonymus">
-	<link href="" rel="stylesheet">
+	<!-- <link href="" rel="stylesheet" crossorigin="anonymus">
+	<link href="" rel="stylesheet"> -->
 </head>
+
+<body data-bs-theme="dark">
+	<!-- esto para mostrar cada conejo-->
+	<div id="content" class="page-content">
+		<div class="box">
+			<div class="box__content">
+				<div class="box__title">¡Bienvenidos a las ordenes de <span id="nombre_cliente"></span></div>
+				<div class="box__text">
+					<div style="overflow:auto;margin-left:10px" id="ordenes">
+						<p>Ordenes</p>
+						<div style="margin-right: 4em; margin-bottom: 1em; border-bottom: 1px solid var(--border);"></div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+ 
+	<script src="https://cdn.jsdelivr.net/etc" integrity="" crossorigin="anonymous"></script>
+	<script>
+		function response_received(response){
+			return response.json()
+		}
+		
+		function parse_data(content){
+			const nombre = document.getElementById("nombre_cliente");
+			nombre.innerText = content.nombre
+			const plata = document.getElementById("plata_cliente");
+			plata.innerText = content.plata
+		}
+		
+		function request_error(error){
+			console.log("ERROR")
+			console.log(error);
+		}
+		
+		let parametros = window.location.search;
+		let id = new URLSearchParams(parametros).get("id");
+		fetch("http://localhost:8000/clientes/"+id)
+			.then(response_received)
+			.then(parse_data)
+			.catch(request_error)
+			
+	</script>
+</body>
 
 </html>
