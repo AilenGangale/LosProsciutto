@@ -6,7 +6,7 @@ from flask_cors import CORS
 from models import db, configure_database, Cliente, Pizza, Orden
 import datetime
 
-app = Flask(__name__, template_folder="../Frontend", static_folder="Frontend")
+app = Flask(__name__, template_folder="../Frontend/templates", static_folder="../Frontend/static")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:111276@localhost:5432/papaspizza'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -15,7 +15,7 @@ CORS(app)
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('home.html')
 
 #Devolver todos los clientes
 @app.route('/clientes/', methods=['GET'])
