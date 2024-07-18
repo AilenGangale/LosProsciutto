@@ -43,14 +43,13 @@
 			console.log(error);
 		}
 		
-		let parametros = window.location.search;
-		let id = new URLSearchParams(parametros).get("id");
-		fetch("http://localhost:8000/clientes/"+id)
+		let id = window.location.pathname.split("/").pop();
+		console.log("ID del cliente:", id); // Asegúrate de que este valor no sea 'undefined'
+		fetch(`http://localhost:8000/clientes/${id}`)
 			.then(response_received)
 			.then(parse_data)
-			.catch(request_error)
-			
-	</script>
+			.catch(request_error);
+			</script>
 </body>
 
 </html>
