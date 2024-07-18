@@ -38,12 +38,8 @@ def all_clientes():
     except:
         return jsonify({"error": "No se pudieron recuperar los datos"})
 
-# @app.route("/cliente/<id_cliente>")
-# def data(id_cliente):
-#   cliente= Cliente.query.where(Cliente.id = id_cliente).all()
-#   print('Cliente:', cliente)
-  
-#   return id_cliente
+
+
 
 @app.route("/clientes/<id_cliente>") 
 def data(id_cliente):
@@ -54,6 +50,9 @@ def data(id_cliente):
     "plata ": cliente.plata
     }
     return jsonify(cliente_data)
+
+def redirigir():
+     return render_template('clientes/index.html')
 
 
 #/clientes --> POST 
