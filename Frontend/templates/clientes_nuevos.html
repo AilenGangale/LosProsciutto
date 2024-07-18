@@ -100,7 +100,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log("Cliente creado:", data);
+                window.location.href = "/ordenes";
             })
             .catch(error => {
                 console.error("Error:", error);
