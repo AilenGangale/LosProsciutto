@@ -84,7 +84,13 @@ def nuevo_cliente():
 
 @app.route('/nuevo_cliente')
 def nuevo_cliente_page():
-    return render_template('clientes_nuevos.html')    
+    return render_template('clientes_nuevos.html')
+
+
+@app.route('/ordenes')
+def orden_cliente():
+    return render_template('ordenes.html')
+
 
 @app.route("/clientes/<id_cliente>/ordenes", methods=['GET'])
 def ordenes_de_un_cliente(id_cliente):
