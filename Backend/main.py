@@ -57,7 +57,7 @@ def data(id_cliente):
 
 
 #/clientes --> POST 
-@app.route('/clientes', methods=['POST'])
+@app.route('/cliente_nuevo', methods=['POST'])
 def nuevo_cliente():
     try:
         data = request.json
@@ -81,7 +81,10 @@ def nuevo_cliente():
         return jsonify({
             'message': 'No se pudo crear el cliente'
         }), 500
-    
+
+@app.route('/nuevo_cliente')
+def nuevo_cliente_page():
+    return render_template('clientes_nuevos.html')    
 
 @app.route("/clientes/<id_cliente>/ordenes", methods=['GET'])
 def ordenes_de_un_cliente(id_cliente):
