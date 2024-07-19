@@ -23,18 +23,7 @@ def all_clientes():
     try:
         # Recupera los registros de una tabla
         clientes = Cliente.query.all()
-        
-        clientes_data = []
-        #Guarda la informacion de clientes en la lista como diccionario de cada cliente
-        for cliente in clientes:
-            cliente_data = {
-                "id_cliente": cliente.id,
-                "nombre": cliente.nombre,
-                "plata": cliente.plata
-            }
-            clientes_data.append(cliente_data)
-        #Lo pone en formato de json (usa base de datos)
-        return jsonify(clientes_data)
+        return render_template('clientes_existentes.html', clientes=clientes)
     except:
         return jsonify({"error": "No se pudieron recuperar los datos"})
 
