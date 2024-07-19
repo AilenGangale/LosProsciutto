@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes Existentes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 90vh;
+        }
+
+        .box {
+            text-align: center;
+            background-color: #000000;
+            padding: 20px 25px 25px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 2em;
+            margin: 0 0 60px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 5px;
+            border: 1px solid #fff;
+        }
+
+        th {
+            background-color: #555;
+            text-align: center;
+        }
+
+        td {
+            background-color: #666;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>Base de datos de clientes actuales</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Plata</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.id }}</td>
+                    <td>{{ cliente.nombre }}</td>
+                    <td>{{ cliente.plata }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

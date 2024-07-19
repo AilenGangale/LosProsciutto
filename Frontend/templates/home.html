@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
+    <title>Home</title>
     <style>
         
         body {
@@ -25,7 +25,7 @@
 
         #clientes img {
             width: 300px; 
-            height: auto; /* La altura se ajusta automáticamente según el ancho */
+            height: auto; 
             border-radius: 50%; 
             margin-bottom: 10px;
         }
@@ -52,18 +52,18 @@
     <div id="clientes">
         <img src="{{ url_for('static', filename='images/logo_pizza.png') }}">   <!--  alt="Logo de Papas's Pizza" -->
         <div id="botones">
-            <button onclick="nuevoUsuario()">Nuevo usuario</button>
-            <button onclick="usuarioExistente()">Usuario existente</button>
+            <button onclick="nuevoUsuario()">Nuevo cliente</button>
+            <button onclick="usuarioExistente()">Clientes existentes</button>
         </div>
     </div>
 
     <script>
         function nuevoUsuario() {
-            console.log("Nuevo usuario");
+            window.location.href = "/nuevo_cliente";
         }
 
         function usuarioExistente() {
-            console.log("Usuario existente");
+            window.location.href = "/clientes";
         }
     </script>
 </body>

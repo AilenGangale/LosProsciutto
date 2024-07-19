@@ -1,5 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
+<<<<<<< HEAD
 #import Datetime
+=======
+import datetime
+>>>>>>> 45620db175fc1e3aa7949ced57ca98d4de8029ac
 db = SQLAlchemy()
 
 def configure_database(app):
