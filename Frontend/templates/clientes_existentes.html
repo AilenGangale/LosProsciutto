@@ -64,10 +64,10 @@
             <tbody>
                 {% for cliente in clientes %}
                 <tr>
-                    <td>{{ cliente.id }}</td>
-                    <td>{{ cliente.nombre }}</td>
-                    <td>{{ cliente.plata }}</td>
-                </tr>
+                <td>{{ cliente.id }}</td>
+                <td><a href="/clientes/{{ cliente.id }}/ordenes">{{ cliente.nombre }}</a></td>
+                <td>{{ cliente.plata }}</td>
+            </tr>
                 {% endfor %}
             </tbody>
         </table>
