@@ -65,31 +65,30 @@
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Órdenes del Cliente {{ cliente.nombre }}</h1>
-        <div class="botones-sabor">
-            <button class="nuevo-boton" onclick="crearNuevaOrden(1)">Muzza</button>
-            <button class="nuevo-boton" onclick="crearNuevaOrden(2)">Faina</button>
-            <button class="nuevo-boton" onclick="crearNuevaOrden(3)">Morron</button>
-        </div>
-        <div class="fichas-container" id="fichas-container">
-            {% if ordenes %}
-                {% for orden in ordenes %}
-                    <div class="ficha">
-                        <div class="textTitulo">Papas Pizza</div>
-                        <div class="numeroOrden">{{ orden.id }}</div>
-                        <div class="barras">
-                            <div class="blanca"><p>ID de Orden: {{ orden.pizza_id }}</p></div>
-                            <div class="rosa"><p>Costo Total: {{ orden.costo_total }}</p></div>
-                            <div class="blanca"><p>Estado: {{ orden.estado }}</p></div>
-                        </div>
+<div class="container">
+    <h1>Órdenes del Cliente {{ cliente.nombre }}</h1>
+    <div class="botones-sabor">
+        <button class="nuevo-boton" onclick="crearNuevaOrden(1)">Muzza</button>
+        <button class="nuevo-boton" onclick="crearNuevaOrden(2)">Faina</button>
+        <button class="nuevo-boton" onclick="crearNuevaOrden(3)">Morron</button>
+    </div>
+    <div class="fichas-container" id="fichas-container">
+        {% if ordenes %}
+            {% for orden in ordenes %}
+                <div class="ficha">
+                    <div class="textTitulo">Papas Pizza</div>
+                    <div class="numeroOrden">{{ orden.orden_id }}</div>
+                    <div class="barras">
+                        <div class="blanca"><p>Sabor de la Pizza: {{ orden.pizza_sabor }}</p></div>
+                        <div class="rosa"><p>Costo Total: {{ orden.costo_total }}</p></div>
+                        <div class="blanca"><p>Estado: {{ orden.estado }}</p></div>
+                        <div class="rosa"><p>ID de Orden: {{ orden.orden_id }}</p></div>
                     </div>
-                {% endfor %}
-            {% else %}
-                <p>No hay órdenes para este cliente.</p>
-            {% endif %}
-        </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No hay órdenes para este cliente.</p>
+        {% endif %}
     </div>
 
     <script>
