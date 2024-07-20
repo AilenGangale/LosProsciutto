@@ -111,7 +111,7 @@
         //Post: Permite eliminar un usuario, haciendo una solicitud al servidor
         function deleteCliente(clienteId) {
             if (confirm('¿Estás seguro de que deseas eliminar este cliente?')) {
-                fetch(`/delete_cliente/${clienteId}`, {
+                fetch(`/clientes/borrar_cliente/${clienteId}`, {
                     method: 'DELETE'
                 })
                 .then(response => response.json())
