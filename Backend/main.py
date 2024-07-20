@@ -184,12 +184,15 @@ def all_ordenes(id_cliente):
 
     
 		
-@app.route("/clientes/id/nueva_orden/<id_pizza>", methods=['POST'])
+@app.route("/clientes/<id_cliente>/nueva_orden/<id_pizza>", methods=['POST'])
 def nueva_orden(id_cliente, id_pizza):
     try:
         pizza = Pizza.query.get(id_pizza)
         #fecha_cosecha = datetime.datetime.now() + datetime.timedelta(minutes = pizza.tiempo_cosecha) #le suma el tiempo de ese tipo de granja
         #nueva_orden = Orden(conejo_id = id_conejo, tipo_granja_id = id_pizza, fecha_cosecha = fecha_cosecha)
+        if not pizza:
+            return jsonify({"mensaje": "Pizza no encontrada."}), 404
+        
         nueva_orden = Orden(cliente_id = id_cliente, pizza_id = id_pizza)
         db.session.add(nueva_orden)
         db.session.commit()
