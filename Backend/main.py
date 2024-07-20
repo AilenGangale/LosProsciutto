@@ -94,104 +94,95 @@ def all_ordenes(id_cliente):
         return jsonify({"error": "No se pudieron recuperar los datos"})
 
 
-
-# @app.route("/clientes/<id_cliente>/ordenes", methods=['GET'])
-# def ordenes_de_un_cliente(id_cliente):
-# 	try:
-# 		ordenes = db.session.query(Orden, Pizza
-# 		).filter(Orden.pizza_id == Pizza.id
-# 		).filter(Orden.cliente_id == id_cliente).all()
-		
-# 		ordenes_data = []
-# 		for (orden, pizza) in ordenes:
-# 			orden_data = {
-# 				'id': orden.id,
-#                 #NO es necesario proque hay un fil
-#                 'cliente_id':id_cliente,
-# 				'pizza_id': pizza.id,
-# 				'costo_total': orden.costo_total,
-#                 'estado': orden.estado
-# 				#'fecha_cosecha': orden.fecha_cosecha.isoformat()
-# 			}
-# 			ordenes_data.append(orden_data)
-# 		return jsonify(ordenes_data)
-# 	except:
-# 		return jsonify({"mensaje": "No hay ordenes."})
-     
-# @app.route("/clientes/<id_cliente>/ordenes", methods=['GET'])
-# def ordenes_de_un_cliente(id_cliente):
-#     try:
-#         ordenes = db.session.query(Orden, Pizza
-#         ).filter(Orden.pizza_id == Pizza.id
-#         ).filter(Orden.cliente_id == id_cliente).all()
+@app.route("/agregar_pizza/<int:id_pizza>", methods=['POST'])
+def agregar_pizza(id_pizza):
+    try:
+        # Predefinir las pizzas con IDs conocidos
+        pizzas_predefinidas = {
+            1: {'nombre': 'Mussarella', 'costo': 200},
+            2: {'nombre': 'Faina', 'costo': 150},
+            3: {'nombre': 'Morrón', 'costo': 180}
+        }
         
-#         print("Órdenes recuperadas:", ordenes)  # Imprime para verificar
-        
-#         ordenes_data = []
-#         for (orden, pizza) in ordenes:
-#             orden_data = {
-#                 'id': orden.id,
-#                 'pizza_id': pizza.id,
-#                 'costo_total': orden.costo_total,
-#                 'estado': orden.estado
-#             }
-#             ordenes_data.append(orden_data)
-            
-        
-#         print("Órdenes en formato de datos:",ordenes_data)  # Imprime para verificar
+        pizza_data = pizzas_predefinidas.get(id_pizza)
+        if not pizza_data:
+            return jsonify({'error': 'Pizza no válida'}), 404
 
-#         # Renderizar la plantilla con los datos de las órdenes
-#         return render_template('ordenes.html', ordenes= jsonify(ordenes_data))
-#     except Exception as e:
-#         print(f"Error: {e}")  # Imprime el error para depuración
-#         return render_template('ordenes.html', mensaje="No hay órdenes.")
+        # Crear la pizza
+        pizza = Pizza(nombre=pizza_data['nombre'], costo=pizza_data['costo'])
+        db.session.add(pizza)
+        db.session.commit()
 
-# @app.route("/clientes/<int:id_cliente>/ordenes", methods=['GET'])
-# def ordenes_de_un_cliente(id_cliente):
-#     try:
-#         # Consulta las órdenes para el cliente dado
-#         ordenes = db.session.query(Orden).filter_by(cliente_id=id_cliente).all()
-        
-#         # Prepara los datos para la respuesta
-#         ordenes_data = []
-#         for orden in ordenes:
-#             orden_data = {
-#                 'id': orden.id,
-#                 'costo': orden.costo_total,
-#                 'estado': orden.estado,
-#                 'id_cliente': orden.cliente_id
-#             }
-#             ordenes_data.append(orden_data)
-
-#         # Retorna los datos en formato JSON
-#         return jsonify({'ordenes': ordenes_data})
-#     except Exception as e:
-#         print(f"Error: {e}")  # Imprime el error para depuración
-#         return jsonify({'mensaje': "No se pudieron recuperar las órdenes."}), 500
-
+        pizza_data['id'] = pizza.id  # Añadir el ID generado por la base de datos
+        return jsonify({'pizza': pizza_data}), 201
+    except Exception as error:
+        print(error)
+        return jsonify({'error': 'Se produjo un error al crear la pizza'}), 500
     
-		
-@app.route("/clientes/id/nueva_orden/<id_tipo_orden>", methods=['POST'])
+
+@app.route("/clientes/<int:id_cliente>/nueva_orden/<int:id_pizza>", methods=['POST'])
 def nueva_orden(id_cliente, id_pizza):
     try:
         pizza = Pizza.query.get(id_pizza)
-        #fecha_cosecha = datetime.datetime.now() + datetime.timedelta(minutes = pizza.tiempo_cosecha) #le suma el tiempo de ese tipo de granja
-        #nueva_orden = Orden(conejo_id = id_conejo, tipo_granja_id = id_pizza, fecha_cosecha = fecha_cosecha)
-        nueva_orden = Orden(cliente_id = id_cliente, pizza_id = id_pizza)
+        if not pizza:
+            return jsonify({'error': 'Pizza no encontrada'}), 404
+
+        nueva_orden = Orden(cliente_id=id_cliente, pizza_id=id_pizza)
         db.session.add(nueva_orden)
         db.session.commit()
 
         orden_data = {
-				'id': nueva_orden.id,
-				'pizza_id': pizza.tipo_pizza,
-				'costo_total': nueva_orden.costo_total,
-                'estado': nueva_orden.estado
-				#'fecha_cosecha': orden.fecha_cosecha.isoformat()
-			}
-        return jsonify({'orden': orden_data}),201
+            'id': nueva_orden.id,
+            'pizza_id': nueva_orden.pizza_id,
+            'costo_total': nueva_orden.costo_total,
+            'estado': nueva_orden.estado
+        }
+        return jsonify({'orden': orden_data}), 201
     except Exception as error:
         print(error)
-        return jsonify({"mensaje": "No se pudo crear la orden."}),500
+        return jsonify({'error': 'Se produjo un error al crear la orden'}), 500
+
+		
+# @app.route("/clientes/id_cliente/nueva_orden/<id_tipo_pizza>", methods=['POST'])
+# def nueva_orden(id_cliente, id_pizza):
+#     try:
+#         pizza = Pizza.query.get(id_pizza)
+#         #fecha_cosecha = datetime.datetime.now() + datetime.timedelta(minutes = pizza.tiempo_cosecha) #le suma el tiempo de ese tipo de granja
+#         #nueva_orden = Orden(conejo_id = id_conejo, tipo_granja_id = id_pizza, fecha_cosecha = fecha_cosecha)
+#         nueva_orden = Orden(cliente_id = id_cliente, pizza_id = id_pizza)
+#         db.session.add(nueva_orden)
+#         db.session.commit()
+
+#         orden_data = {
+# 				'id': nueva_orden.id,
+# 				'pizza_id': pizza.tipo_pizza,
+# 				'costo_total': nueva_orden.costo_total,
+#                 'estado': nueva_orden.estado
+# 				#'fecha_cosecha': orden.fecha_cosecha.isoformat()
+# 			}
+#         return jsonify({'orden': orden_data}),201
+#     except Exception as error:
+#         print(error)
+#         return jsonify({"mensaje": "No se pudo crear la orden."}),500
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 #dado el id de la orden que le llega por parámetro busca la orden en la base de datos, busca el cliente en la base de datos y busca la pizza en la base de datos. Tiene 3 variables, hace los cambios necesarios (si recibió la orden le resto plata y pongo que la pizza está entregada). Luego se añaden esas cosas a la sesión y commiteamos. Devolvemos como retorno del post la nueva plata del cliente para poder actualizar dinámicamente la página
 @app.route("/retirar/<id_orden>", methods=['POST'])
