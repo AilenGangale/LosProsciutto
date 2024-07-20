@@ -55,6 +55,13 @@
 <body>
     <div class="container">
         <h1>Órdenes del Cliente {{cliente.nombre}}</h1>
+        <!-- Gustos de Pizza -->
+        <select id="pizzaSelector">
+            <!-- Opciones de ejemplo, deberías llenarlas dinámicamente desde tu base de datos -->
+            <option value="1">Muzzarella</option>
+            <option value="2">Fugazzeta</option>
+            <option value="3">Jamón y Morrón</option>
+        </select>
         <button class="nuevo-boton" onclick="crearNuevaOrden()">Nueva Orden</button>
         <div class="fichas-container" id="fichas-container">
             <!-- Acá estarían las órdenes -->
@@ -133,12 +140,26 @@
                 .catch(request_error);
         }
 
+        // Obtiene el ID de la pizza seleccionada del menú desplegable y lo usa en la solicitud para crear una nueva orden.
+        function crearNuevaOrden() {
+            const pizzaId = document.getElementById('pizzaSelector').value;
+
+            fetch(`http://localhost:8000/clientes/${cliente_id}/nueva_orden/${pizzaId}`, { method: 'POST' })
+                .then(response_received)
+                .then(data => {
+                    // Vuelve a cargar las órdenes del cliente para mostrar la nueva orden
+                    cargar_ordenes_cliente(cliente_id);
+                })
+                .catch(request_error);
+        }
+
         // Obtener el ID del cliente desde la URL
         const parametros = new URLSearchParams(window.location.search);
         const cliente_id = parametros.get("cliente_id");
 
         // Cargar las órdenes del cliente
         cargar_ordenes_cliente(cliente_id);
+
     </script>
 </body>
 </html>
