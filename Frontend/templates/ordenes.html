@@ -166,9 +166,22 @@
                 .catch(request_error);
         }
 
-        // Obtener el ID del cliente desde la URL
-        const parametros = new URLSearchParams(window.location.search);
-        const cliente_id = parametros.get("cliente_id");
+        // Función para obtener el ID del cliente desde el pathname
+        function getClienteIdFromPath() {
+            const pathArray = window.location.pathname.split('/');
+            const clienteIndex = pathArray.indexOf('clientes');
+            if (clienteIndex !== -1 && pathArray.length > clienteIndex + 1) {
+                return pathArray[clienteIndex + 1];
+            }
+            return null;
+        }
+
+        // Obtener el ID del cliente desde el pathname
+        const cliente_id = getClienteIdFromPath();
+
+        // // Obtener el ID del cliente desde la URL
+        // const parametros = new URLSearchParams(window.location.search);
+        // const cliente_id = parametros.get("cliente_id");
 
         // Verifica si cliente_id es null
         if (cliente_id === null) {
