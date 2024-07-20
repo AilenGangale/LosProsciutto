@@ -184,7 +184,7 @@ def all_ordenes(id_cliente):
 
     
 		
-@app.route("/clientes/id/nueva_orden/<id_tipo_orden>", methods=['POST'])
+@app.route("/clientes/id/nueva_orden/<id_pizza>", methods=['POST'])
 def nueva_orden(id_cliente, id_pizza):
     try:
         pizza = Pizza.query.get(id_pizza)
@@ -196,7 +196,7 @@ def nueva_orden(id_cliente, id_pizza):
 
         orden_data = {
 				'id': nueva_orden.id,
-				'pizza_id': pizza.tipo_pizza,
+				'pizza_id': pizza.sabor,
 				'costo_total': nueva_orden.costo_total,
                 'estado': nueva_orden.estado
 				#'fecha_cosecha': orden.fecha_cosecha.isoformat()
