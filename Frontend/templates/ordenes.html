@@ -125,6 +125,21 @@
                 container.innerHTML = '<p>No hay órdenes para este cliente.</p>';
             }
         }
+        
+        //Realiza una solicitud fetch para obtener las órdenes del cliente con el ID dado.
+        function cargar_ordenes_cliente(cliente_id) {
+            fetch(`http://localhost:8000/clientes/${cliente_id}/ordenes`)
+                .then(response_received)
+                .then(mostrar_ordenes)
+                .catch(request_error);
+        }
+
+        // Obtener el ID del cliente desde la URL
+        const parametros = new URLSearchParams(window.location.search);
+        const cliente_id = parametros.get("cliente_id");
+
+        // Cargar las órdenes del cliente
+        cargar_ordenes_cliente(cliente_id);
     </script>
 
 
