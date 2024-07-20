@@ -1,71 +1,100 @@
-<!DOCTYPE html>
+
+
+    <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Órdenes del Cliente</title>
+    <title>Título de la Página</title>
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .ficha {
-            width: 300px;
+
+        .ficha{
+            width: 250px;
             border: 1px solid rgba(0, 0, 0, 0.1);
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            margin: 10px;
-            padding: 10px;
-            border-radius: 5px;
         }
-        .textTitulo {
-            font-size: 20px;
+        .textTitulo{
+            width:250px;
+            height: 25px;
+            font-size:20px;
             background: #FFEDEB;
-            color: #fa8f9f;
+            color:#fa8f9f;
             border-bottom: 2px dotted #FFBAC4;
-            padding: 5px;
-            margin-bottom: 10px;
+
+}
+
+        .numeroOrden{
+            width:250px;
+            height:50px;
+            text-align: center;
+            background: #FFEDEB;
+            color:#fa8f9f;
+            font-size: 40px;
+            border-bottom: 2px dotted #FFBAC4;
+
+}
+        .barras {
+            width: 250px;
+            height: 300px;
+            display: flex; 
+            flex-direction: column;
+
         }
-        .numeroOrden, .costo, .estado, .idCliente {
-            font-size: 16px;
-            margin: 5px 0;
+
+        .blanca, .rosa {
+            flex: 1;
+
+            width: 100%; 
+        }
+
+        .blanca {
+            background: #FFEDEB;
+        }
+
+        .rosa {
+            background: #FFBAC4;
         }
     </style>
 </head>
 <body>
+
     <h1>Órdenes del Cliente</h1>
     <div id="ordenes-container">
         <!-- Los datos se cargarán aquí -->
     </div>
 
-    <div class="box">
+    <div class="container">
         <h1>Órdenes del Cliente</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Pizza ID</th>
-                    <th>Costo Total</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% if ordenes %}
-                    {% for orden in ordenes %}
-                        <tr>
-                            <td>{{ orden.id }}</td>
-                            <td>{{ orden.pizza_id }}</td>
-                            <td>{{ orden.costo_total }}</td>
-                            <td>{{ orden.estado }}</td>
-                        </tr>
-                    {% endfor %}
-                {% else %}
-                    <tr>
-                        <td colspan="4">No hay órdenes para este cliente.</td>
-                    </tr>
-                {% endif %}
-            </tbody>
-        </table>
+        <div class="fichas-container">
+            {% if ordenes %}
+                {% for orden in ordenes %}
+                    <div class="ficha">
+                        <div class="textTitulo">Papas Pizza</div>
+                        <div class="numeroOrden">{{ orden.id }}</div>
+                        <div class="barras">
+                            <div class="blanca"><p>ID de Orden: {{ orden.pizza_id }}</p></div>
+                            <div class="rosa"><p>Costo Total: {{ orden.costo_total }}</p></div>
+                            <div class="blanca"><p>Estado: {{ orden.estado }}</p></div>
+                            <div class="rosa"></div>
+                            <div class="blanca"></div>
+                            <div class="rosa"></div>
+                            <div class="blanca"></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No hay órdenes para este cliente.</p>
+            {% endif %}
+        </div>
     </div>
+
+    </div>
+
+
+
+</body>
+</html>
 
 </body>
 </html>
