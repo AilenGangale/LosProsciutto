@@ -28,6 +28,19 @@ def all_clientes():
     except:
         return jsonify({"error": "No se pudieron recuperar los datos"})
 
+
+@app.route('/delete_cliente/<int:id>', methods=['DELETE'])
+def delete_cliente(id):
+    try:
+        cliente = Cliente.query.get(id)
+        if cliente:
+            db.session.delete(cliente)
+            db.session.commit()
+            return jsonify({"success": True})
+        else:
+            return jsonify({"success": False, "error": "Cliente no encontrado"})
+    except:
+        return jsonify({"success": False, "error": "Error al eliminar el cliente"})
 # @app.route("/cliente/<id_cliente>")
 # def data(id_cliente):
 #   cliente= Cliente.query.where(Cliente.id = id_cliente).all()
