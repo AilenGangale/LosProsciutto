@@ -102,10 +102,13 @@
         </table>
     </div>
     <script>
+
+        //Post: Redirecciona al usuario a esa ruta
         function Ordenes(clienteId) {
             window.location.href = `/clientes/${clienteId}/ordenes`;
         }
 
+        //Post: Permite eliminar un usuario, haciendo una solicitud al servidor
         function deleteCliente(clienteId) {
             if (confirm('¿Estás seguro de que deseas eliminar este cliente?')) {
                 fetch(`/delete_cliente/${clienteId}`, {
