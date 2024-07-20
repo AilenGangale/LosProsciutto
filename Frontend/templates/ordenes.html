@@ -1,6 +1,4 @@
-
-
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -85,6 +83,19 @@
 
     </div>
 
+    <script>
+        // Recibe una respuesta de una llamada fetch y la convierte a JSON.
+        function response_received(response) {
+            return response.json();
+        }
+
+        // Maneja errores de las solicitudes fetch, imprimiendo "ERROR" y el error en la consola.
+        function request_error(error) {
+            console.log("ERROR");
+            console.log(error);
+        }
+
+    </script>
 
 
 </body>
