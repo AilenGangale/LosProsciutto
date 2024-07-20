@@ -6,52 +6,39 @@
     <title>Título de la Página</title>
 
     <style>
-        .ficha {
-            width: 250px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            margin: 10px; /* Añade margen para espaciar las fichas */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F7DCB9;
+            margin: 0;
+            padding: 0;
+            color: #333;
         }
-        .textTitulo {
-            width: 250px;
-            height: 25px;
-            font-size: 20px;
-            background: #FFEDEB;
-            color: #fa8f9f;
-            border-bottom: 2px dotted #FFBAC4;
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #FBE9D3;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
-        .numeroOrden {
-            width: 250px;
-            height: 50px;
+
+        h1 {
+            font-size: 2em;
+            color: #ff9fa9;
             text-align: center;
-            background: #FFEDEB;
-            color: #fa8f9f;
-            font-size: 40px;
-            border-bottom: 2px dotted #FFBAC4;
+            margin-bottom: 20px;
         }
-        .barras {
-            width: 250px;
-            height: 300px;
+
+        .botones-sabor {
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            margin-bottom: 20px;
         }
-        .blanca, .rosa {
-            flex: 1;
-            width: 100%;
-        }
-        .blanca {
-            background: #FFEDEB;
-        }
-        .rosa {
-            background: #FFBAC4;
-        }
-        /* Flexbox para el contenedor de las fichas */
-        .fichas-container {
-            display: flex;
-            flex-wrap: wrap; /* Permite que las fichas se envuelvan en múltiples filas si es necesario */
-        }
+
         .nuevo-boton {
-            margin: 20px;
+            margin: 0 10px;
             padding: 10px 20px;
             font-size: 16px;
             background-color: #fa8f9f;
@@ -59,9 +46,70 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
+
         .nuevo-boton:hover {
             background-color: #ff9fa9;
+        }
+
+        .fichas-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px; /* Añade espacio entre las fichas */
+            justify-content: center; /* Centra las fichas en el contenedor */
+        }
+
+        .ficha {
+            width: 250px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .textTitulo {
+            padding: 10px;
+            background: #FFEDEB;
+            color: #fa8f9f;
+            border-bottom: 2px solid #FFBAC4;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .numeroOrden {
+            padding: 10px;
+            background: #FFEDEB;
+            color: #fa8f9f;
+            font-size: 24px;
+            text-align: center;
+            border-bottom: 2px solid #FFBAC4;
+        }
+
+        .barras {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blanca, .rosa {
+            padding: 10px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .blanca {
+            background: #FFEDEB;
+        }
+
+        .rosa {
+            background: #FFBAC4;
+            color: #fff;
+        }
+
+        .blanca p, .rosa p {
+            margin: 0;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -90,99 +138,100 @@
             <p>No hay órdenes para este cliente.</p>
         {% endif %}
     </div>
+</div>
 
-    <script>
-        function getClienteIdFromPath() {
-            const pathArray = window.location.pathname.split('/');
-            const clienteIndex = pathArray.indexOf('clientes');
-            if (clienteIndex !== -1 && pathArray.length > clienteIndex + 1) {
-                return pathArray[clienteIndex + 1];
-            }
-            return null;
+<script>
+    function getClienteIdFromPath() {
+        const pathArray = window.location.pathname.split('/');
+        const clienteIndex = pathArray.indexOf('clientes');
+        if (clienteIndex !== -1 && pathArray.length > clienteIndex + 1) {
+            return pathArray[clienteIndex + 1];
         }
-        
-        function response_received(response) {
-            return response.json();
-        }
-
-        function request_error(error) {
-            console.log("ERROR");
-            console.log(error);
-            if (error.response) {
-                error.response.text().then(text => console.log(text));
-            }
-        }
-
-        function mostrar_ordenes(ordenes) {
-            const container = document.getElementById('fichas-container');
-            container.innerHTML = ''; // Limpiar el contenedor
-
-            if (ordenes.length > 0) {
-                ordenes.forEach(orden => {
-                    const ficha = document.createElement('div');
-                    ficha.classList.add('ficha');
-
-                    ficha.innerHTML = `
-                        <div class="textTitulo">Papas Pizza</div>
-                        <div class="numeroOrden">${orden.id}</div>
-                        <div class="barras">
-                            <div class="blanca"><p>ID de Orden: ${orden.pizza_id}</p></div>
-                            <div class="rosa"><p>Costo Total: ${orden.costo_total}</p></div>
-                            <div class="blanca"><p>Estado: ${orden.estado}</p></div>
-                        </div>
-                    `;
-
-                    container.appendChild(ficha);
-                });
-            } else {
-                container.innerHTML = '<p>No hay órdenes para este cliente.</p>';
-            }
-        }
-
-        function cargar_ordenes_cliente(cliente_id) {
-            fetch(`/clientes/${cliente_id}/ordenes`)
-                .then(response_received)
-                .then(mostrar_ordenes)
-                .catch(request_error);
-        }
-
-        function crearNuevaOrden(numeroPizza) {
-            const clienteId = getClienteIdFromPath();
-            if (!clienteId) {
-                console.error("El ID del cliente no se pudo obtener.");
-            return;
+        return null;
+    }
+    
+    function response_received(response) {
+        return response.json();
     }
 
-    fetch(`/clientes/${clienteId}/nueva_orden/${numeroPizza}`, { method: 'POST' })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                return response.text().then(text => {
-                    throw new Error(text || 'Error desconocido');
-                });
-            }
-        })
-        .then(data => {
-            if (data.orden) {
-                cargar_ordenes_cliente(clienteId);
-            } else {
-                console.error("No se pudo crear la orden:", data.mensaje);
-            }
-        })
-        .catch(error => {
-            console.error("ERROR:", error);
-        });
-}
-
-        const cliente_id = getClienteIdFromPath();
-
-        if (cliente_id === null) {
-            console.error("El ID del cliente es null. Asegúrate de que la URL contiene el parámetro cliente_id.");
-        } else {
-            cargar_ordenes_cliente(cliente_id);
+    function request_error(error) {
+        console.log("ERROR");
+        console.log(error);
+        if (error.response) {
+            error.response.text().then(text => console.log(text));
         }
-    </script>
+    }
+
+    function mostrar_ordenes(ordenes) {
+        const container = document.getElementById('fichas-container');
+        container.innerHTML = ''; // Limpiar el contenedor
+
+        if (ordenes.length > 0) {
+            ordenes.forEach(orden => {
+                const ficha = document.createElement('div');
+                ficha.classList.add('ficha');
+
+                ficha.innerHTML = `
+                    <div class="textTitulo">Papas Pizza</div>
+                    <div class="numeroOrden">${orden.id}</div>
+                    <div class="barras">
+                        <div class="blanca"><p>ID de Orden: ${orden.pizza_id}</p></div>
+                        <div class="rosa"><p>Costo Total: ${orden.costo_total}</p></div>
+                        <div class="blanca"><p>Estado: ${orden.estado}</p></div>
+                    </div>
+                `;
+
+                container.appendChild(ficha);
+            });
+        } else {
+            container.innerHTML = '<p>No hay órdenes para este cliente.</p>';
+        }
+    }
+
+    function cargar_ordenes_cliente(cliente_id) {
+        fetch(`/clientes/${cliente_id}/ordenes`)
+            .then(response_received)
+            .then(mostrar_ordenes)
+            .catch(request_error);
+    }
+
+    function crearNuevaOrden(numeroPizza) {
+        const clienteId = getClienteIdFromPath();
+        if (!clienteId) {
+            console.error("El ID del cliente no se pudo obtener.");
+            return;
+        }
+
+        fetch(`/clientes/${clienteId}/nueva_orden/${numeroPizza}`, { method: 'POST' })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return response.text().then(text => {
+                        throw new Error(text || 'Error desconocido');
+                    });
+                }
+            })
+            .then(data => {
+                if (data.orden) {
+                    cargar_ordenes_cliente(clienteId);
+                } else {
+                    console.error("No se pudo crear la orden:", data.mensaje);
+                }
+            })
+            .catch(error => {
+                console.error("ERROR:", error);
+            });
+    }
+
+    const cliente_id = getClienteIdFromPath();
+
+    if (cliente_id === null) {
+        console.error("El ID del cliente es null. Asegúrate de que la URL contiene el parámetro cliente_id.");
+    } else {
+        cargar_ordenes_cliente(cliente_id);
+    }
+</script>
 </body>
 </html>
 
