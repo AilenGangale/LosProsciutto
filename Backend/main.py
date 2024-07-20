@@ -94,7 +94,7 @@ def nuevo_cliente_page():
 def orden_cliente():
     return render_template('ordenes.html')
 
-#Devolver todos los clientes
+#Devolver todos las ordenes
 @app.route('/clientes/<id_cliente>/ordenes', methods=['GET'])
 def all_ordenes(id_cliente):
     try:
@@ -183,31 +183,34 @@ def all_ordenes(id_cliente):
 #         return jsonify({'mensaje': "No se pudieron recuperar las órdenes."}), 500
 
     
-		
-@app.route("/clientes/<id_cliente>/nueva_orden/<id_pizza>", methods=['POST'])
-def nueva_orden(id_cliente, id_pizza):
+@app.route('/clientes/<int:cliente_id>/nueva_orden/<int:sabor_id>', methods=['POST'])
+def nueva_orden(cliente_id, sabor_id):
     try:
-        pizza = Pizza.query.get(id_pizza)
-        #fecha_cosecha = datetime.datetime.now() + datetime.timedelta(minutes = pizza.tiempo_cosecha) #le suma el tiempo de ese tipo de granja
-        #nueva_orden = Orden(conejo_id = id_conejo, tipo_granja_id = id_pizza, fecha_cosecha = fecha_cosecha)
-        if not pizza:
-            return jsonify({"mensaje": "Pizza no encontrada."}), 404
+        # Lógica para calcular el costo total y el estado
+        costo_total = 12.99  # Ejemplo de costo
+        estado = "Pendiente"
+
+        # Crear una nueva orden
+        nueva_orden = Orden(
+            cliente_id=cliente_id,
+            pizza_id=sabor_id,
+            costo_total=costo_total,
+            estado=estado
+        )
         
-        nueva_orden = Orden(cliente_id = id_cliente, pizza_id = id_pizza)
         db.session.add(nueva_orden)
         db.session.commit()
 
-        orden_data = {
-				'id': nueva_orden.id,
-				'pizza_id': pizza.sabor,
-				'costo_total': nueva_orden.costo_total,
-                'estado': nueva_orden.estado
-				#'fecha_cosecha': orden.fecha_cosecha.isoformat()
-			}
-        return jsonify({'orden': orden_data}),201
-    except Exception as error:
-        print(error)
-        return jsonify({"mensaje": "No se pudo crear la orden."}),500
+        return jsonify({"orden": {
+            "id": nueva_orden.id,
+            "pizza_id": nueva_orden.pizza_id,
+            "costo_total": nueva_orden.costo_total,
+            "estado": nueva_orden.estado
+        }}), 200
+
+    except Exception as e:
+        print(e)  # Para depuración en el servidor
+        return jsonify({"mensaje": "Error interno del servidor."}), 500
 	
 #dado el id de la orden que le llega por parámetro busca la orden en la base de datos, busca el cliente en la base de datos y busca la pizza en la base de datos. Tiene 3 variables, hace los cambios necesarios (si recibió la orden le resto plata y pongo que la pizza está entregada). Luego se añaden esas cosas a la sesión y commiteamos. Devolvemos como retorno del post la nueva plata del cliente para poder actualizar dinámicamente la página
 @app.route("/retirar/<id_orden>", methods=['POST'])
