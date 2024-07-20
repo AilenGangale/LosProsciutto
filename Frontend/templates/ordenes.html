@@ -170,8 +170,13 @@
         const parametros = new URLSearchParams(window.location.search);
         const cliente_id = parametros.get("cliente_id");
 
-        // Cargar las órdenes del cliente
-        cargar_ordenes_cliente(cliente_id);
+        // Verifica si cliente_id es null
+        if (cliente_id === null) {
+            console.error("El ID del cliente es null. Asegúrate de que la URL contiene el parámetro cliente_id.");
+        } else {
+            // Cargar las órdenes del cliente
+            cargar_ordenes_cliente(cliente_id);
+        }
 
     </script>
 </body>
