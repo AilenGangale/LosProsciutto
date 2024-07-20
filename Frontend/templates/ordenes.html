@@ -68,13 +68,11 @@
 <body>
     <div class="container">
         <h1>Órdenes del Cliente {{ cliente.nombre }}</h1>
-        <!-- Gustos de Pizza -->
-        <select id="sabor">
-            <option value="1">Muzzarella</option>
-            <option value="2">Fugazzeta</option>
-            <option value="3">Jamón y Morrón</option>
-        </select>
-        <button class="nuevo-boton" onclick="crearNuevaOrden()">Nueva Orden</button>
+        <div class="botones-sabor">
+            <button class="nuevo-boton" onclick="crearNuevaOrden(1)">Muzza</button>
+            <button class="nuevo-boton" onclick="crearNuevaOrden(2)">Faina</button>
+            <button class="nuevo-boton" onclick="crearNuevaOrden(3)">Morron</button>
+        </div>
         <div class="fichas-container" id="fichas-container">
             {% if ordenes %}
                 {% for orden in ordenes %}
@@ -95,6 +93,15 @@
     </div>
 
     <script>
+        function getClienteIdFromPath() {
+            const pathArray = window.location.pathname.split('/');
+            const clienteIndex = pathArray.indexOf('clientes');
+            if (clienteIndex !== -1 && pathArray.length > clienteIndex + 1) {
+                return pathArray[clienteIndex + 1];
+            }
+            return null;
+        }
+        
         function response_received(response) {
             return response.json();
         }
@@ -140,41 +147,34 @@
                 .catch(request_error);
         }
 
-        function crearNuevaOrden() {
-            const sabor = document.getElementById('sabor').value;
+        function crearNuevaOrden(numeroPizza) {
             const clienteId = getClienteIdFromPath();
+            if (!clienteId) {
+                console.error("El ID del cliente no se pudo obtener.");
+            return;
+    }
 
-            fetch(`/clientes/${clienteId}/nueva_orden/${sabor}`, { method: 'POST' })
-                .then(response => {
-                    // Verificar si la respuesta es JSON
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        return response.text().then(text => {
-                            throw new Error(text || 'Error desconocido');
-                        });
-                    }
-                })
-                .then(data => {
-                    if (data.orden) {
-                        cargar_ordenes_cliente(clienteId);
-                    } else {
-                        console.error("No se pudo crear la orden:", data.mensaje);
-                    }
-                })
-                .catch(error => {
-                    console.error("ERROR:", error);
+    fetch(`/clientes/${clienteId}/nueva_orden/${numeroPizza}`, { method: 'POST' })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                return response.text().then(text => {
+                    throw new Error(text || 'Error desconocido');
                 });
-        }
-
-        function getClienteIdFromPath() {
-            const pathArray = window.location.pathname.split('/');
-            const clienteIndex = pathArray.indexOf('clientes');
-            if (clienteIndex !== -1 && pathArray.length > clienteIndex + 1) {
-                return pathArray[clienteIndex + 1];
             }
-            return null;
-        }
+        })
+        .then(data => {
+            if (data.orden) {
+                cargar_ordenes_cliente(clienteId);
+            } else {
+                console.error("No se pudo crear la orden:", data.mensaje);
+            }
+        })
+        .catch(error => {
+            console.error("ERROR:", error);
+        });
+}
 
         const cliente_id = getClienteIdFromPath();
 
