@@ -81,71 +81,41 @@
         </div>
     </div>
 
-    <script>
-        // Recibe una respuesta de una llamada fetch y la convierte a JSON.
-        function response_received(response) {
-            return response.json();
-        }
-
-        // Maneja errores de las solicitudes fetch, imprimiendo "ERROR" y el error en la consola.
-        function request_error(error) {
-            console.log("ERROR");
-            console.log(error);
-        }
-
-        // Recibe una lista de órdenes y las muestra en el contenedor fichas-container.
-        function mostrar_ordenes(ordenes) {
-            const container = document.getElementById('fichas-container');
-            container.innerHTML = ''; // Limpiar el contenedor
-
-            if (ordenes.length > 0) {
-                ordenes.forEach(orden => {
-                    const ficha = document.createElement('div');
-                    ficha.classList.add('ficha');
-
-                    ficha.innerHTML = `
+    <div class="container">
+        <h1>Órdenes del Cliente {{ cliente.nombre }}</h1>
+        <!-- Gustos de Pizza -->
+        <select id="pizzaSelector">
+            <!-- Opciones de ejemplo, deberías llenarlas dinámicamente desde tu base de datos -->
+            <option value="1">Muzzarella</option>
+            <option value="2">Fugazzeta</option>
+            <option value="3">Jamón y Morrón</option>
+        </select>
+        <button class="nuevo-boton" onclick="crearNuevaOrden()">Nueva Orden</button>
+        
+            {% if ordenes %}
+                {% for orden in ordenes %}
+                    <div class="ficha">
                         <div class="textTitulo">Papas Pizza</div>
-                        <div class="numeroOrden">${orden.id}</div>
+                        <div class="numeroOrden">{{ orden.id }}</div>
                         <div class="barras">
-                            <div class="blanca"><p>ID de Orden: ${orden.pizza_id}</p></div>
-                            <div class="rosa"><p>Costo Total: ${orden.costo_total}</p></div>
-                            <div class="blanca"><p>Estado: ${orden.estado}</p></div>
+                            <div class="blanca"><p>ID de Orden: {{ orden.pizza_id }}</p></div>
+                            <div class="rosa"><p>Costo Total: {{ orden.costo_total }}</p></div>
+                            <div class="blanca"><p>Estado: {{ orden.estado }}</p></div>
                             <div class="rosa"></div>
                             <div class="blanca"></div>
                             <div class="rosa"></div>
                             <div class="blanca"></div>
                         </div>
-                    `;
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No hay órdenes para este cliente.</p>
+            {% endif %}
+        </div>
+    </div>
 
-                    container.appendChild(ficha);
-                });
-            } else {
-                container.innerHTML = '<p>No hay órdenes para este cliente.</p>';
-            }
-        }
-
-        //Realiza una solicitud fetch para obtener las órdenes del cliente con el ID dado.
-        function cargar_ordenes_cliente(cliente_id) {
-            fetch(`http://localhost:8000/clientes/${cliente_id}/ordenes`)
-                .then(response_received)
-                .then(mostrar_ordenes)
-                .catch(request_error);
-        }
-
-        // Obtiene el ID de la pizza seleccionada del menú desplegable y lo usa en la solicitud para crear una nueva orden.
-        function crearNuevaOrden() {
-            const pizzaId = document.getElementById('pizzaSelector').value;
-
-            fetch(`http://localhost:8000/clientes/${cliente_id}/nueva_orden/${pizzaId}`, { method: 'POST' })
-                .then(response_received)
-                .then(data => {
-                    // Vuelve a cargar las órdenes del cliente para mostrar la nueva orden
-                    cargar_ordenes_cliente(cliente_id);
-                })
-                .catch(request_error);
-        }
-
-        // Función para obtener el ID del cliente desde el pathname
+    <script>
+        // Obtener el ID del cliente desde el pathname
         function getClienteIdFromPath() {
             const pathArray = window.location.pathname.split('/');
             const clienteIndex = pathArray.indexOf('clientes');
@@ -158,10 +128,6 @@
         // Obtener el ID del cliente desde el pathname
         const cliente_id = getClienteIdFromPath();
 
-        // // Obtener el ID del cliente desde la URL
-        // const parametros = new URLSearchParams(window.location.search);
-        // const cliente_id = parametros.get("cliente_id");
-
         // Verifica si cliente_id es null
         if (cliente_id === null) {
             console.error("El ID del cliente es null. Asegúrate de que la URL contiene el parámetro cliente_id.");
@@ -169,8 +135,9 @@
             // Cargar las órdenes del cliente
             cargar_ordenes_cliente(cliente_id);
         }
-
     </script>
+
+    
 </body>
 </html>
 
