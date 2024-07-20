@@ -80,12 +80,40 @@
                 <input type="text" id="plata" name="plata">
             </div>
             <div id="botones">
-                <button onclick="nuevaOrden()">Nueva orden</button>
+                <button onclick="crearCliente()">Nueva orden</button>
             </div>
         </div>
     </div>
-
     <script>
+        function crearCliente() {
+            let nombre = document.getElementById('nombre').value;
+            let plata = document.getElementById('plata').value;
+
+            fetch('/cliente_nuevo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nombre: nombre, plata: plata })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.cliente && data.cliente.id) {
+                    // Redirige a la página de órdenes del cliente usando el ID
+                    window.location.href = `/clientes/${data.cliente.id}/ordenes`;
+                } else {
+                    console.error("ID del cliente no recibido.");
+                    // #Agregar mensaje si el cliente ya fue creado
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        }
+    </script>
+    
+
+    <!-- <script>
         function nuevaOrden() {
             let nombre = document.getElementById('nombre').value;
             let plata = document.getElementById('plata').value;
@@ -106,6 +134,6 @@
                 console.error("Error:", error);
             });
         }
-    </script>
+    </script> -->
 </body>
 </html>
