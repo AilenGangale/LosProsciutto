@@ -37,17 +37,29 @@
         th, td {
             padding: 5px;
             border: 1px solid #fff;
+            text-align: center;
         }
 
         th {
             background-color: #555;
-            text-align: center;
         }
 
         td {
             background-color: #666;
-            text-align: left;
         }
+
+        .delete-btn, .order-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 3px;
+            cursor: pointer;
+        }
+
+        .order-btn {
+            background-color: #3498db;
+        }
+
     </style>
 </head>
 <body>
@@ -59,15 +71,20 @@
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Plata</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for cliente in clientes %}
                 <tr>
-                <td>{{ cliente.id }}</td>
-                <td><a href="/clientes/{{ cliente.id }}/ordenes">{{ cliente.nombre }}</a></td>
-                <td>{{ cliente.plata }}</td>
-            </tr>
+                    <td>{{ cliente.id }}</td>
+                    <td>{{ cliente.nombre }}</td>
+                    <td>{{ cliente.plata }}</td>
+                    <td>
+                        <button class="order-btn">Ordenar</button>
+                        <button class="delete-btn">Eliminar</button>
+                    </td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
