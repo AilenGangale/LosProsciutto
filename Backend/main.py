@@ -96,17 +96,37 @@ def nuevo_cliente_page():
 def orden_cliente():
     return render_template('ordenes.html')
 
-#Devolver todos las ordenes
-@app.route('/clientes/<id_cliente>/ordenes', methods=['GET'])
+    
+@app.route('/clientes/<int:id_cliente>/ordenes', methods=['GET'])
 def all_ordenes(id_cliente):
     try:
-         # Recupera las órdenes del cliente
-        ordenes = Orden.query.filter_by(cliente_id=id_cliente).all()
         # Recupera el cliente específico
-        cliente = Cliente.query.filter_by(id=id_cliente).first()  # Usa `first()` para obtener un solo objeto
-        return render_template('ordenes.html', ordenes=ordenes, cliente=cliente)
-    except:
-        return jsonify({"error": "No se pudieron recuperar los datos"})
+        cliente = Cliente.query.filter_by(id=id_cliente).first()
+        if not cliente:
+            return jsonify({"error": "Cliente no encontrado"}), 404
+
+        # Recupera las órdenes del cliente
+        ordenes = Orden.query.filter_by(cliente_id=id_cliente).all()
+        
+        # Recupera la información de las pizzas asociadas a las órdenes
+        ordenes_info = []
+        for orden in ordenes:
+            pizza = Pizza.query.get(orden.pizza_id)
+            if pizza:
+                ordenes_info.append({
+                    'orden_id': orden.id,
+                    'pizza_id': pizza.id,
+                    'pizza_sabor': pizza.sabor,
+                    'pizza_costo': pizza.costo_pizza,
+                    'costo_total': orden.costo_total,
+                    'estado': orden.estado
+                })
+
+        return render_template('ordenes.html', ordenes=ordenes_info, cliente=cliente)
+    except Exception as e:
+        print(f"Error al recuperar las órdenes: {e}")
+        return jsonify({"error": "No se pudieron recuperar los datos"}), 500
+
 
 @app.route('/clientes/<cliente_id>/nueva_orden/<int:sabor_id>', methods=['POST'])
 def nueva_orden(cliente_id, sabor_id):
