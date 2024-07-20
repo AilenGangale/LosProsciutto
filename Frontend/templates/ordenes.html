@@ -61,6 +61,14 @@
     <div class="container">
         <h1>Órdenes del Cliente {{cliente.nombre}}</h1>
         <div class="fichas-container">
+
+            </div>
+
+            <h2>Selecciona una pizza para agregar</h2>
+            <button class="button" onclick="crearOrden(1)">Mussarella</button>
+            <button class="button" onclick="crearOrden(2)">Faina</button>
+            <button class="button" onclick="crearOrden(3)">Morrón</button>
+        </div>
             {% if ordenes %}
                 {% for orden in ordenes %}
                     <div class="ficha">
