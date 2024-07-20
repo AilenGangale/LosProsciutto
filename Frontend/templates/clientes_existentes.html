@@ -93,13 +93,39 @@
                     <td>{{ cliente.nombre }}</td>
                     <td>{{ cliente.plata }}</td>
                     <td>
-                        <button class="order-btn">Ordenar</button>
-                        <button class="delete-btn">Eliminar</button>
+                        <button class="order-btn" onclick="Ordenes({{ cliente.id }})">Orden</button>
+                        <button class="delete-btn" onclick="deleteCliente({{ cliente.id }})">Eliminar</button>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+    <script>
+        function Ordenes(clienteId) {
+            window.location.href = `/ordenes?cliente_id=${clienteId}`;
+        }
+
+        function deleteCliente(clienteId) {
+            if (confirm('¿Estás seguro de que deseas eliminar este cliente?')) {
+                fetch(`/delete_cliente/${clienteId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Cliente eliminado exitosamente.');
+                        window.location.reload();
+                    } else {
+                        alert('Error al eliminar el cliente.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al eliminar el cliente.');
+                });
+            }
+        }
+    </script>
 </body>
 </html>
