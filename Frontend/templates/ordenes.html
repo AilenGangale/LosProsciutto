@@ -95,6 +95,36 @@
             console.log(error);
         }
 
+        // Recibe una lista de órdenes y las muestra en el contenedor fichas-container.
+        function mostrar_ordenes(ordenes) {
+            const container = document.getElementById('fichas-container');
+            container.innerHTML = ''; // Limpiar el contenedor
+
+            if (ordenes.length > 0) {
+                ordenes.forEach(orden => {
+                    const ficha = document.createElement('div');
+                    ficha.classList.add('ficha');
+
+                    ficha.innerHTML = `
+                        <div class="textTitulo">Papas Pizza</div>
+                        <div class="numeroOrden">${orden.id}</div>
+                        <div class="barras">
+                            <div class="blanca"><p>ID de Orden: ${orden.pizza_id}</p></div>
+                            <div class="rosa"><p>Costo Total: ${orden.costo_total}</p></div>
+                            <div class="blanca"><p>Estado: ${orden.estado}</p></div>
+                            <div class="rosa"></div>
+                            <div class="blanca"></div>
+                            <div class="rosa"></div>
+                            <div class="blanca"></div>
+                        </div>
+                    `;
+
+                    container.appendChild(ficha);
+                });
+            } else {
+                container.innerHTML = '<p>No hay órdenes para este cliente.</p>';
+            }
+        }
     </script>
 
 
