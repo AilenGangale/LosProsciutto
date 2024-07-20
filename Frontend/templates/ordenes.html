@@ -53,34 +53,11 @@
     </style>
 </head>
 <body>
-
-
-
     <div class="container">
         <h1>Órdenes del Cliente {{cliente.nombre}}</h1>
-        <div class="fichas-container">
-            {% if ordenes %}
-                {% for orden in ordenes %}
-                    <div class="ficha">
-                        <div class="textTitulo">Papas Pizza</div>
-                        <div class="numeroOrden">{{ orden.id }}</div>
-                        <div class="barras">
-                            <div class="blanca"><p>ID de Orden: {{ orden.pizza_id }}</p></div>
-                            <div class="rosa"><p>Costo Total: {{ orden.costo_total }}</p></div>
-                            <div class="blanca"><p>Estado: {{ orden.estado }}</p></div>
-                            <div class="rosa"></div>
-                            <div class="blanca"></div>
-                            <div class="rosa"></div>
-                            <div class="blanca"></div>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p>No hay órdenes para este cliente.</p>
-            {% endif %}
+        <div class="fichas-container" id="fichas-container">
+            <!-- Acá estarían las órdenes -->
         </div>
-    </div>
-
     </div>
 
     <script>
@@ -125,7 +102,7 @@
                 container.innerHTML = '<p>No hay órdenes para este cliente.</p>';
             }
         }
-        
+
         //Realiza una solicitud fetch para obtener las órdenes del cliente con el ID dado.
         function cargar_ordenes_cliente(cliente_id) {
             fetch(`http://localhost:8000/clientes/${cliente_id}/ordenes`)
@@ -141,8 +118,6 @@
         // Cargar las órdenes del cliente
         cargar_ordenes_cliente(cliente_id);
     </script>
-
-
 </body>
 </html>
 
