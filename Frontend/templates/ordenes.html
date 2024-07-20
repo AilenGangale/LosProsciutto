@@ -93,6 +93,45 @@
 
     </div>
 
+    <script>
+        function crearOrden(idPizza) {
+            const clienteId = "{{ cliente.id }}"; // Suponiendo que el ID del cliente está disponible en el contexto de Jinja
+
+            fetch(`/agregar_pizza/${idPizza}`, {
+                method: 'POST'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al agregar la pizza');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Pizza agregada:', data);
+                const pizzaId = data.pizza.id; // Obtener el ID de la pizza recién creada
+                
+                return fetch(`/clientes/${clienteId}/nueva_orden/${pizzaId}`, {
+                    method: 'POST'
+                });
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al crear la orden');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Orden creada:', data);
+                alert('Orden creada con éxito');
+                location.reload(); // Recargar la página para mostrar la nueva orden
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Hubo un problema al crear la orden');
+            });
+        }
+    </script>
+
 
 
 </body>
