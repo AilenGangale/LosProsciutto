@@ -141,10 +141,12 @@ def nueva_orden(id_cliente, id_pizza):
             return jsonify({'error': 'Pizza no encontrada'}), 404
 
         nueva_orden = Orden(cliente_id=id_cliente, pizza_id=id_pizza)
+
         db.session.add(nueva_orden)
         db.session.commit()
 
         orden_data = {
+
             'id': nueva_orden.id,
             'pizza_id': nueva_orden.pizza_id,
             'costo_total': nueva_orden.costo_total,
