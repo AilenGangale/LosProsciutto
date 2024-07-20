@@ -21,6 +21,7 @@ def home():
 @app.route('/clientes/', methods=['GET'])
 def all_clientes():
     try:
+        
         # Recupera los registros de una tabla
         clientes = Cliente.query.all()
         return render_template('clientes_existentes.html', clientes=clientes)
@@ -84,9 +85,11 @@ def orden_cliente():
 @app.route('/clientes/<id_cliente>/ordenes', methods=['GET'])
 def all_ordenes(id_cliente):
     try:
-        # Recupera los registros de una tabla
+         # Recupera las órdenes del cliente
         ordenes = Orden.query.filter_by(cliente_id=id_cliente).all()
-        return render_template('ordenes.html', ordenes=ordenes)
+        # Recupera el cliente específico
+        cliente = Cliente.query.filter_by(id=id_cliente).first()  # Usa `first()` para obtener un solo objeto
+        return render_template('ordenes.html', ordenes=ordenes, cliente=cliente)
     except:
         return jsonify({"error": "No se pudieron recuperar los datos"})
 
