@@ -8,52 +8,49 @@
     <title>Título de la Página</title>
 
     <style>
-
-        .ficha{
+        .ficha {
             width: 250px;
             border: 1px solid rgba(0, 0, 0, 0.1);
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            margin: 10px; /* Añade margen para espaciar las fichas */
         }
-        .textTitulo{
-            width:250px;
+        .textTitulo {
+            width: 250px;
             height: 25px;
-            font-size:20px;
+            font-size: 20px;
             background: #FFEDEB;
-            color:#fa8f9f;
+            color: #fa8f9f;
             border-bottom: 2px dotted #FFBAC4;
-
-}
-
-        .numeroOrden{
-            width:250px;
-            height:50px;
+        }
+        .numeroOrden {
+            width: 250px;
+            height: 50px;
             text-align: center;
             background: #FFEDEB;
-            color:#fa8f9f;
+            color: #fa8f9f;
             font-size: 40px;
             border-bottom: 2px dotted #FFBAC4;
-
-}
+        }
         .barras {
             width: 250px;
             height: 300px;
-            display: flex; 
+            display: flex;
             flex-direction: column;
-
         }
-
         .blanca, .rosa {
             flex: 1;
-
-            width: 100%; 
+            width: 100%;
         }
-
         .blanca {
             background: #FFEDEB;
         }
-
         .rosa {
             background: #FFBAC4;
+        }
+        /* Flexbox para el contenedor de las fichas */
+        .fichas-container {
+            display: flex;
+            flex-wrap: wrap; /* Permite que las fichas se envuelvan en múltiples filas si es necesario */
         }
     </style>
 </head>
