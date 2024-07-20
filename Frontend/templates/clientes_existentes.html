@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color:  #F7DCB9;
+            background-color:  #fbd19a;
             color: #333;
             display: flex;
             justify-content: center;
@@ -72,6 +72,22 @@
             background-color: #fff;
         }
 
+        .container-acciones {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Espacio entre los botones */
+        }
+
+        .container-acciones button {
+            flex: 1; /* Ocupa el mismo espacio */
+            padding: 10px;
+            font-size: 1em;
+            color: #272424;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 0; /* Sin margen para que ocupen todo el ancho disponible */
+        }
     </style>
 </head>
 <body>
@@ -91,8 +107,8 @@
                 <tr>
                     <td>{{ cliente.id }}</td>
                     <td>{{ cliente.nombre }}</td>
-                    <td>{{ cliente.plata }}</td>
-                    <td>
+                    <td>$ {{ cliente.plata }}</td>
+                    <td class="container-acciones">
                         <button class="order-btn" onclick="Ordenes({{ cliente.id }})">Orden</button>
                         <button class="delete-btn" onclick="deleteCliente({{ cliente.id }})">Eliminar</button>
                     </td>

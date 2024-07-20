@@ -7,36 +7,51 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #333; 
-            color: #fff; 
+            background-color: #fbd19a;
             padding: 20px; 
             text-align: center; 
+            color: #333; /* Color del texto principal para mejor legibilidad */
         }
 
         h1 {
-            color: #fff; 
-            font-size: 2em; 
+            color: #fa8f9f;; /* Color más oscuro para mejor contraste */
+            font-size: 3em;
+            font-weight: bold;
+        }
+
+        h4 {
+            color: #fa8f9f; /* Color más oscuro para mejor contraste */
         }
 
         .limit {
-            border: 2px solid #000; 
+            border: 2px solid#fa8f9f;/* Color más oscuro para mejor contraste */
             padding: 20px;
             margin-top: 20px;
             display: inline-block;
             text-align: left;
+            border-radius: 3%;
+            background-color: #FBE9D3; /* Fondo suave para buen contraste con el texto */
         }
 
         label {
-            font-size: 1.2em;
+            font-size: 2em;
             margin-right: 10px;
             flex: 1;
             text-align: right;
+            color: #fa8f9f; /* Color más oscuro para mejor contraste */
+            font-weight: bold;
+        }
+
+        #mensajito {
+            color: #fa8f9f; /* Color más oscuro para mejor contraste */
+            text-align: center;
+            font-size: 1.3em;
         }
 
         input[type="text"] {
             padding: 5px;
-            font-size: 1em;
-            border: 1px solid #ccc;
+            font-size: 1.5em;
+            border: 1px solid #fa8f9f; /* Borde del campo de texto en color contrastante */
             flex: 2;
             margin-left: 10px;
         }
@@ -57,11 +72,15 @@
             margin: 0 10px;
             padding: 10px 20px; 
             font-size: 1em; 
-            background-color: #000c7a;
+            background-color: #B23B5B; /* Botones en color más oscuro para mejor contraste */
             color: #ffffff;
             border: none;
             cursor: pointer;
             border-radius: 5px;
+        }
+
+        #botones button:hover {
+            background-color: #920F3E; /* Color más oscuro para el hover de los botones */
         }
 
     </style>
@@ -69,8 +88,9 @@
 <body>
     <h1>Bienvenido a la pizzeria</h1>
     <div class="limit">
-        <h4>Por favor, ingrese sus datos</h4>
+        
         <div id="clientes">
+            <h4 id="mensajito">Por favor, ingrese sus datos</h4>
             <div class="form">
                 <label for="nombre">Nombre =</label>
                 <input type="text" id="nombre" name="nombre">
@@ -82,6 +102,7 @@
             <div id="botones">
                 <button onclick="crearCliente()">Nueva orden</button>
             </div>
+            
         </div>
     </div>
     <script>
