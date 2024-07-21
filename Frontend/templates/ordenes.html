@@ -111,6 +111,22 @@
             margin: 0;
             font-size: 14px;
         }
+
+        .boton-eliminar {
+            margin: 10px 0;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #e57373;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .boton-eliminar:hover {
+            background-color: #ef5350; 
+        }
     </style>
 </head>
 <div class="container">
@@ -132,6 +148,7 @@
                         <div class="blanca"><p>Estado: {{ orden.estado }}</p></div>
                         <div class="rosa"><p>ID de Orden: {{ orden.orden_id }}</p></div>
                     </div>
+                    <button class="boton-eliminar" onclick="eliminarOrden({{ orden.orden_id }})">Eliminar</button>
                 </div>
             {% endfor %}
         {% else %}
@@ -230,6 +247,26 @@
                 console.error("ERROR:", error);
             });
     }
+
+    function eliminarOrden(ordenId) {
+        if (confirm("¿Estás seguro de que deseas eliminar esta orden?")) {
+            fetch(`/ordenes/${ordenId}`, { method: 'DELETE' })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        return response.text().then(text => {
+                            throw new Error(text || 'Error desconocido');
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error("ERROR:", error);
+                });
+        }
+    }
+
+
 
     const cliente_id = getClienteIdFromPath();
 
