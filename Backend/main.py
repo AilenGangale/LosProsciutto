@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 from models import db, configure_database, Cliente, Pizza, Orden
@@ -112,7 +111,9 @@ def all_ordenes(id_cliente):
                     'pizza_sabor': pizza.sabor,
                     'pizza_costo': pizza.costo_pizza,
                     'costo_total': orden.costo_total,
-                    'estado': orden.estado
+                    'estado': orden.estado,
+                    'fecha_creacion': orden.fecha_creacion.isoformat(),
+                    'fecha_entrega': orden.fecha_entrega.isoformat()
                 })
 
         return render_template('ordenes.html', ordenes=ordenes_info, cliente=cliente)
@@ -189,7 +190,8 @@ def nueva_orden(cliente_id, sabor_id):
             cliente_id=cliente_id,
             pizza_id=nueva_pizza.id,
             costo_total=nueva_pizza.costo_pizza,
-            estado="Pendiente"
+            estado="Pendiente",
+            tiempo_coccion=nueva_pizza.tiempo_coccion
         )
 
         # Reducir el dinero del cliente
