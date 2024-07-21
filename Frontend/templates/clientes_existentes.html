@@ -96,6 +96,17 @@
             object-fit: cover;
             
         }
+        .botones button{
+            flex: 1; /* Ocupa el mismo espacio */
+            padding: 10px;
+            font-size: 1em;
+            color: #272424;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px;
+            
+        }
     </style>
 </head>
 <body>
@@ -128,8 +139,15 @@
                 {% endfor %}
             </tbody>
         </table>
+        <div class="botones">
+            <button onclick="nuevoUsuario()">Nuevo cliente</button>
+        </div>
     </div>
     <script>
+
+    function nuevoUsuario() {
+            window.location.href = "/nuevo_cliente";
+        }
         const imagenes = [
             '../static/images/clientes/cliente_1.png',
             '../static/images/clientes/cliente_2.png',

@@ -10,27 +10,28 @@
             background-color: #fbd19a;
             padding: 20px; 
             text-align: center; 
-            color: #333; /* Color del texto principal para mejor legibilidad */
+            color: #333;
         }
 
         h1 {
-            color: #fa8f9f;; /* Color más oscuro para mejor contraste */
+            color: #fa8f9f;
             font-size: 3em;
             font-weight: bold;
         }
 
         h4 {
-            color: #fa8f9f; /* Color más oscuro para mejor contraste */
+            color: #fa8f9f;
         }
 
         .limit {
-            border: 2px solid#fa8f9f;/* Color más oscuro para mejor contraste */
+            border: 2px solid #fa8f9f;
             padding: 20px;
             margin-top: 20px;
             display: inline-block;
             text-align: left;
             border-radius: 3%;
-            background-color: #FBE9D3; /* Fondo suave para buen contraste con el texto */
+            background-color: #FBE9D3;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
 
         label {
@@ -38,29 +39,36 @@
             margin-right: 10px;
             flex: 1;
             text-align: right;
-            color: #fa8f9f; /* Color más oscuro para mejor contraste */
+            color: #fa8f9f;
             font-weight: bold;
         }
 
         #mensajito {
-            color: #fa8f9f; /* Color más oscuro para mejor contraste */
+            color: #fa8f9f;
             text-align: center;
             font-size: 1.3em;
         }
 
         input[type="text"] {
-            padding: 5px;
+            padding: 10px;
             font-size: 1.5em;
-            border: 1px solid #fa8f9f; /* Borde del campo de texto en color contrastante */
+            border: 1px solid #fa8f9f;
             flex: 2;
             margin-left: 10px;
+            border-radius: 5px;
         }
 
         .form {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 10px;
+            margin-bottom: 20px; /* Mayor espaciado entre los campos */
+        }
+
+        input[type="text"] {
+        
+            border: 1px solid #fa8f9f;
+            
         }
 
         #botones {
@@ -72,15 +80,17 @@
             margin: 0 10px;
             padding: 10px 20px; 
             font-size: 1em; 
-            background-color: #B23B5B; /* Botones en color más oscuro para mejor contraste */
+            background-color: #B23B5B;
             color: #ffffff;
             border: none;
             cursor: pointer;
             border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Añadir sombra a los botones */
+            transition: background-color 0.3s ease;
         }
 
         #botones button:hover {
-            background-color: #920F3E; /* Color más oscuro para el hover de los botones */
+            background-color: #920F3E;
         }
 
     </style>
@@ -92,11 +102,11 @@
         <div id="clientes">
             <h4 id="mensajito">Por favor, ingrese sus datos</h4>
             <div class="form">
-                <label for="nombre">Nombre =</label>
+                <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre">
             </div>
             <div class="form">
-                <label for="plata">Plata =</label>
+                <label for="plata">Plata:</label>
                 <input type="text" id="plata" name="plata">
             </div>
             <div id="botones">
