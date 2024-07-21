@@ -1,21 +1,22 @@
 # LosProsciutto
 Tp/final de introduccion al software
-#Instalar python utltima version
+# Instalar python utltima version
 sudo apt install python3
 
-#Instalar Postgres
+# Instalar Postgres
 sudo apt install postgresql postgresql-contrib
 
-
-#Instalar entorno virtual
+# Instalar entorno virtual
 sudo apt install python3.12-venv
 
-#Activar Entorno virtual
+# Activar Entorno virtual
 python3 -m venv venv
 source venv/bin/activate
 
-#Instalar Flask
+# Instalar Flask
 pip install flask
 
-#Instalar sqlalchemy
+# Instalar sqlalchemy
 pip install Flask Flask-SQLAlchemy
+pip install flask-cors
+pip install psycopg2
