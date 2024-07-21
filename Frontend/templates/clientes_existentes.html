@@ -88,29 +88,40 @@
             border-radius: 5px;
             margin: 0; /* Sin margen para que ocupen todo el ancho disponible */
         }
+
+        .imagen-cliente {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            
+        }
     </style>
 </head>
 <body>
-    <div class="box">
+     <div class="box">
         <h1>Base de datos de clientes actuales</h1>
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Imagen</th>
                     <th>Nombre</th>
                     <th>Plata</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="clientes-tbody">
                 {% for cliente in clientes %}
                 <tr>
                     <td>{{ cliente.id }}</td>
+                    <td><img src="" alt="Imagen de {{ cliente.nombre }}" class="imagen-cliente"></td>
                     <td>{{ cliente.nombre }}</td>
-                    <td>$ {{ cliente.plata }}</td>
-                    <td class="container-acciones">
-                        <button class="order-btn" onclick="Ordenes({{ cliente.id }})">Orden</button>
-                        <button class="delete-btn" onclick="deleteCliente({{ cliente.id }})">Eliminar</button>
+                    <td>{{ cliente.plata }}</td>
+                    <td>
+                        <div class="container-acciones">
+                            <button class="order-btn" onclick="Ordenes({{ cliente.id }})">Orden</button>
+                            <button class="delete-btn" onclick="deleteCliente({{ cliente.id }})">Eliminar</button>
+                        </div>
                     </td>
                 </tr>
                 {% endfor %}
@@ -118,13 +129,37 @@
         </table>
     </div>
     <script>
+        const imagenes = [
+            '../static/images/clientes/cliente_1.png',
+            '../static/images/clientes/cliente_2.png',
+            '../static/images/clientes/cliente_3.png',
+            '../static/images/clientes/cliente_4.png',
+            '../static/images/clientes/cliente_5.png',
+            '../static/images/clientes/cliente_6.png',
+            '../static/images/clientes/cliente_7.png',
+            '../static/images/clientes/cliente_8.png',
+            '../static/images/clientes/cliente_9.png',
+            '../static/images/clientes/cliente_10.png'
+        ];
 
-        //Post: Redirecciona al usuario a esa ruta
+        function asignarImagenesAleatorias() {
+            const imagenesShuffled = imagenes.sort(() => 0.5 - Math.random());
+            const imagenesAsignadas = imagenesShuffled.slice(0, document.querySelectorAll('.imagen-cliente').length);
+            document.querySelectorAll('.imagen-cliente').forEach((img, index) => {
+                img.src = imagenesAsignadas[index];
+                console.log(`Asignada ${imagenesAsignadas[index]} a ${img.alt}`);
+            });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            asignarImagenesAleatorias();
+        });
+
         function Ordenes(clienteId) {
             window.location.href = `/clientes/${clienteId}/ordenes`;
         }
 
-        //Post: Permite eliminar un usuario, haciendo una solicitud al servidor
         function deleteCliente(clienteId) {
             if (confirm('¿Estás seguro de que deseas eliminar este cliente?')) {
                 fetch(`/clientes/borrar_cliente/${clienteId}`, {
