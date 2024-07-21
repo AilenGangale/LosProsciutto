@@ -24,8 +24,8 @@ class Orden(db.Model):
     costo_total = db.Column(db.Integer, nullable=False)
     estado = db.Column(db.String(50), nullable=False)
     #Agrego los campos de fechas
-    #fecha_creacion = db.Column(db.DateTime, default= datetime.datetime.now)
-    #fecha_entrega = db.Column(db.DateTime, nullable=False)
+    fecha_creacion = db.Column(db.DateTime, default= datetime.datetime.now)
+    fecha_entrega = db.Column(db.DateTime, nullable=False)
     
 
 class Pizza(db.Model):
@@ -35,6 +35,6 @@ class Pizza(db.Model):
     sabor = db.Column(db.String(255), nullable=False)
     costo_pizza = db.Column(db.Integer, nullable=False)
     #Agrego tiempo de coccion comentado
-    #tiempo_coccion = db.Column(db.Integer, nullable=False)
+    tiempo_coccion = db.Column(db.Integer, nullable=False)
     
 
