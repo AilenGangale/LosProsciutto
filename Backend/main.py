@@ -121,22 +121,66 @@ def all_ordenes(id_cliente):
         return jsonify({"error": "No se pudieron recuperar los datos"}), 500
 
 #Crear la pizza con el sabor correspondiente y la orden con cliente que corresponda POST
-@app.route('/clientes/<cliente_id>/nueva_orden/<int:sabor_id>', methods=['POST'])
+# @app.route('/clientes/<cliente_id>/nueva_orden/<int:sabor_id>', methods=['POST'])
+# def nueva_orden(cliente_id, sabor_id):
+#     try:
+
+#         cliente = Cliente.query.get(cliente_id)
+#         if not cliente:
+#             return jsonify({"mensaje": "Cliente no encontrado."}), 404
+
+#         # Asignar sabor segun el numero
+#         sabores = {1: "Muzzarella", 2: "Fugazzeta", 3: "Jamón y Morrón"}
+#         sabor = sabores.get(sabor_id)
+#         if not sabor:
+#             return jsonify({"mensaje": "Sabor no válido."}), 400
+
+#         # Crear una nueva pizza
+#         nueva_pizza = Pizza(sabor=sabor, costo_pizza=120)  # Asegúrate de que `costo_pizza` esté definido
+#         db.session.add(nueva_pizza)
+#         db.session.commit()
+
+#         # Crear una nueva orden con la nueva pizza
+#         nueva_orden = Orden(
+#             cliente_id=cliente_id,
+#             pizza_id=nueva_pizza.id,
+#             costo_total=120,
+#             estado="Pendiente"
+#         )
+#         db.session.add(nueva_orden)
+#         db.session.commit()
+
+#         return jsonify({"orden": {
+#             "id": nueva_orden.id,
+#             "pizza_id": nueva_orden.pizza_id,
+#             "costo_total": nueva_orden.costo_total,
+#             "estado": nueva_orden.estado
+#         }}), 200
+
+#     except Exception as e:
+#         print(f"Error interno del servidor: {e}")
+#         return jsonify({"mensaje": "Error interno del servidor."}), 500
+@app.route('/clientes/<int:cliente_id>/nueva_orden/<int:sabor_id>', methods=['POST'])
 def nueva_orden(cliente_id, sabor_id):
     try:
-
         cliente = Cliente.query.get(cliente_id)
         if not cliente:
             return jsonify({"mensaje": "Cliente no encontrado."}), 404
 
-        # Asignar sabor segun el numero
+        # Asignar sabor según el número
         sabores = {1: "Muzzarella", 2: "Fugazzeta", 3: "Jamón y Morrón"}
         sabor = sabores.get(sabor_id)
         if not sabor:
             return jsonify({"mensaje": "Sabor no válido."}), 400
 
         # Crear una nueva pizza
-        nueva_pizza = Pizza(sabor=sabor, costo_pizza=120)  # Asegúrate de que `costo_pizza` esté definido
+        nueva_pizza = Pizza(sabor=sabor, costo_pizza=120, tiempo_coccion=1)  # Tiempo de cocción en minutos
+        
+        # Chequear si el cliente tiene suficiente dinero
+        if cliente.plata < nueva_pizza.costo_pizza:
+            return jsonify({"mensaje": "No hay suficiente dinero."}), 400
+        
+        # Agregar la pizza a la base de datos
         db.session.add(nueva_pizza)
         db.session.commit()
 
@@ -144,9 +188,14 @@ def nueva_orden(cliente_id, sabor_id):
         nueva_orden = Orden(
             cliente_id=cliente_id,
             pizza_id=nueva_pizza.id,
-            costo_total=120,
+            costo_total=nueva_pizza.costo_pizza,
             estado="Pendiente"
         )
+
+        # Reducir el dinero del cliente
+        cliente.plata -= nueva_pizza.costo_pizza
+        db.session.add(cliente)  # Asegúrate de añadir el cliente a la sesión
+        
         db.session.add(nueva_orden)
         db.session.commit()
 
@@ -154,7 +203,8 @@ def nueva_orden(cliente_id, sabor_id):
             "id": nueva_orden.id,
             "pizza_id": nueva_orden.pizza_id,
             "costo_total": nueva_orden.costo_total,
-            "estado": nueva_orden.estado
+            "estado": nueva_orden.estado,
+            "tiempo_coccion": nueva_pizza.tiempo_coccion  # Añadido tiempo de cocción
         }}), 200
 
     except Exception as e:
