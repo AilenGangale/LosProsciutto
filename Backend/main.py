@@ -1,7 +1,5 @@
 
 from flask import Flask, render_template, request, jsonify
-#pip install psycopg2
-#pip install flask-cors
 from flask_cors import CORS
 from models import db, configure_database, Cliente, Pizza, Orden
 import datetime
@@ -17,42 +15,24 @@ CORS(app)
 def home():
     return render_template('home.html')
 
-#Devolver todos los clientes
+#Endpoints de CLIENTES
+
+#Devolver todos los clientes GET
 @app.route('/clientes/', methods=['GET'])
 def all_clientes():
     try:
         
         # Recupera los registros de una tabla
         clientes = Cliente.query.all()
-        return render_template('clientes_existentes.html', clientes=clientes)
+        return render_template('clientes_existentes.html', clientes=clientes) #Renderiza la pagina y devuelve la informacion de clientes
     except:
         return jsonify({"error": "No se pudieron recuperar los datos"})
 
-
-@app.route('/clientes/borrar_cliente/<int:id_cliente>', methods=['DELETE'])
-def delete_cliente(id_cliente):
-    try:
-        # Obtén el cliente
-        cliente = Cliente.query.get(id_cliente)
-        if cliente:
-            # Elimina las órdenes asociadas al cliente
-            Orden.query.filter_by(cliente_id=id_cliente).delete()
-
-            # Elimina el cliente
-            db.session.delete(cliente)
-            db.session.commit()
-            return jsonify({"success": True})
-        else:
-            return jsonify({"success": False, "error": "Cliente no encontrado"}), 404
-    except Exception as e:
-        print(f"Error al eliminar el cliente: {e}")
-        db.session.rollback()  # Deshaz cualquier cambio en caso de error
-        return jsonify({"success": False, "error": "Error al eliminar el cliente"}), 500
-
-
+#Devuelve la informacion de un solo cliente GET
 @app.route("/clientes/<id_cliente>") 
 def data(id_cliente):
-    cliente= Cliente.query.get(id_cliente)
+    cliente= Cliente.query.get(id_cliente) #Obtiene el cliente que tenga el id que se le pasa por parametro
+    #Se guradan los datos en diccionario
     cliente_data = {
     "id" : cliente.id,
     "nombre": cliente.nombre,
@@ -60,12 +40,14 @@ def data(id_cliente):
     }
     return jsonify(cliente_data)
 
-
-#/clientes --> POST 
+#Sube un nuevo cliente a la base de datos POST
 @app.route('/cliente_nuevo', methods=['POST'])
 def nuevo_cliente():
     try:
+        #Obtenemos la informacion del rquest y se interppreta en json
         data = request.json
+
+        #se extraen los valores para los cmapos del nuevo_cliente
         nuevo_nombre = data.get("nombre")
         nueva_plata = data.get("plata")
         
@@ -87,28 +69,39 @@ def nuevo_cliente():
             'message': 'No se pudo crear el cliente'
         }), 500
 
-@app.route('/nuevo_cliente')
-def nuevo_cliente_page():
-    return render_template('clientes_nuevos.html')
+#Borra un cliente cons todas sus oordens y pizzas de la base de datos DELETE
+@app.route('/clientes/borrar_cliente/<int:id_cliente>', methods=['DELETE'])
+def delete_cliente(id_cliente):
+    try:
+        # Obtener el cliente
+        cliente = Cliente.query.get(id_cliente)
+        if cliente:
+            # Elimina las órdenes asociadas al cliente
+            Orden.query.filter_by(cliente_id=id_cliente).delete()
+            db.session.delete(cliente)
+            db.session.commit()
+            return jsonify({"success": True})
+        else:
+            return jsonify({"success": False, "error": "Cliente no encontrado"}), 404
+    except Exception as e:
+        print(f"Error al eliminar el cliente: {e}")
+        db.session.rollback() #Si algun error sucede se deshace todo
+        return jsonify({"success": False, "error": "Error al eliminar el cliente"}), 500
 
-
-@app.route('/ordenes')
-def orden_cliente():
-    return render_template('ordenes.html')
-
-    
+#Endpoints de ORDENES
+#Obtenemos todas las ordenes de un solo cliente GET
 @app.route('/clientes/<int:id_cliente>/ordenes', methods=['GET'])
 def all_ordenes(id_cliente):
     try:
-        # Recupera el cliente específico
+        # Obtiene el cliente
         cliente = Cliente.query.filter_by(id=id_cliente).first()
         if not cliente:
             return jsonify({"error": "Cliente no encontrado"}), 404
 
-        # Recupera las órdenes del cliente
+        # Obtiene todas las órdenes del cliente
         ordenes = Orden.query.filter_by(cliente_id=id_cliente).all()
         
-        # Recupera la información de las pizzas asociadas a las órdenes
+        # GUarda la información de las pizzas asocwiadas a las órdenes
         ordenes_info = []
         for orden in ordenes:
             pizza = Pizza.query.get(orden.pizza_id)
@@ -127,24 +120,22 @@ def all_ordenes(id_cliente):
         print(f"Error al recuperar las órdenes: {e}")
         return jsonify({"error": "No se pudieron recuperar los datos"}), 500
 
-
+#Crear la pizza con el sabor correspondiente y la orden con cliente que corresponda POST
 @app.route('/clientes/<cliente_id>/nueva_orden/<int:sabor_id>', methods=['POST'])
 def nueva_orden(cliente_id, sabor_id):
     try:
-        print(f"Recibiendo solicitud para cliente_id: {cliente_id} y sabor_id: {sabor_id}")
 
-        # Verifica que el cliente exista
         cliente = Cliente.query.get(cliente_id)
         if not cliente:
             return jsonify({"mensaje": "Cliente no encontrado."}), 404
 
-        # Asignar sabor basado en el número
+        # Asignar sabor segun el numero
         sabores = {1: "Muzzarella", 2: "Fugazzeta", 3: "Jamón y Morrón"}
         sabor = sabores.get(sabor_id)
         if not sabor:
             return jsonify({"mensaje": "Sabor no válido."}), 400
 
-        # Crear una nueva pizza con el sabor proporcionado
+        # Crear una nueva pizza
         nueva_pizza = Pizza(sabor=sabor, costo_pizza=120)  # Asegúrate de que `costo_pizza` esté definido
         db.session.add(nueva_pizza)
         db.session.commit()
@@ -169,27 +160,6 @@ def nueva_orden(cliente_id, sabor_id):
     except Exception as e:
         print(f"Error interno del servidor: {e}")
         return jsonify({"mensaje": "Error interno del servidor."}), 500
-	
-#dado el id de la orden que le llega por parámetro busca la orden en la base de datos, busca el cliente en la base de datos y busca la pizza en la base de datos. Tiene 3 variables, hace los cambios necesarios (si recibió la orden le resto plata y pongo que la pizza está entregada). Luego se añaden esas cosas a la sesión y commiteamos. Devolvemos como retorno del post la nueva plata del cliente para poder actualizar dinámicamente la página
-@app.route("/retirar/<id_orden>", methods=['POST'])
-def retirar_orden(id_orden):
-	try:
-		orden = Orden.query.get(id_orden)
-		cliente = Cliente.query.get(orden.cliente_id)
-		pizza = Pizza.query.get(orden.pizza_id)
-		
-		#FALTAN UN MONTÓN DE CHEQUEOS (la granja tiene que estar lista para cosechar, la granja no tiene que ya estar cosechada)
-		cliente.plata -= pizza.costo_pizza
-		#orden.cosechada = True
-		
-		db.session.add(orden)
-		db.session.add(cliente)
-		db.session.commit()
-		
-		return jsonify({'nueva_plata': cliente.plata}),201
-	except Exception as error:
-		print(error)
-		return jsonify({"mensaje": "No se pudo retirar la orden."}),500
 
 #Permite modificar una orden. Primero la busca por su id, luego obtiene los datos de la solicitud. Actualiza los campos si se proporcionaron nuevos datos, guarda los cambios y devuelve la información actualizada de la orden.
 @app.route('/ordenes/<id_orden>', methods=['PUT'])
@@ -227,6 +197,37 @@ def actualizar_orden(id_orden):
     except Exception as error:
         print(error)
         return jsonify({"error": "No se pudo actualizar la orden"}), 500
+
+
+#dado el id de la orden que le llega por parámetro busca la orden en la base de datos, busca el cliente en la base de datos y busca la pizza en la base de datos. Tiene 3 variables, hace los cambios necesarios (si recibió la orden le resto plata y pongo que la pizza está entregada). Luego se añaden esas cosas a la sesión y commiteamos. Devolvemos como retorno del post la nueva plata del cliente para poder actualizar dinámicamente la página
+@app.route("/retirar/<id_orden>", methods=['POST'])
+def retirar_orden(id_orden):
+	try:
+		orden = Orden.query.get(id_orden)
+		cliente = Cliente.query.get(orden.cliente_id)
+		pizza = Pizza.query.get(orden.pizza_id)
+		
+		#FALTAN UN MONTÓN DE CHEQUEOS (la granja tiene que estar lista para cosechar, la granja no tiene que ya estar cosechada)
+		cliente.plata -= pizza.costo_pizza
+		#orden.cosechada = True
+		
+		db.session.add(orden)
+		db.session.add(cliente)
+		db.session.commit()
+		
+		return jsonify({'nueva_plata': cliente.plata}),201
+	except Exception as error:
+		print(error)
+		return jsonify({"mensaje": "No se pudo retirar la orden."}),500
+
+@app.route('/nuevo_cliente')
+def nuevo_cliente_page():
+    return render_template('clientes_nuevos.html')
+
+
+@app.route('/ordenes')
+def orden_cliente():
+    return render_template('ordenes.html')
 
 if __name__ == '__main__':
     print("Starting server...")
