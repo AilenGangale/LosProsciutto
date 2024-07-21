@@ -219,7 +219,9 @@
             })
             .then(data => {
                 if (data.orden) {
-                    cargar_ordenes_cliente(clienteId);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
                 } else {
                     console.error("No se pudo crear la orden:", data.mensaje);
                 }
