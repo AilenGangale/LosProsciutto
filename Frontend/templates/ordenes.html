@@ -138,9 +138,14 @@
             <p>No hay órdenes para este cliente.</p>
         {% endif %}
     </div>
+    <button class="nuevo-boton" onclick="volverAlInicio()">Volver a clientes</button>
 </div>
 
 <script>
+
+    function volverAlInicio(){
+        window.location.href = "/clientes";
+    }
     function getClienteIdFromPath() {
         const pathArray = window.location.pathname.split('/');
         const clienteIndex = pathArray.indexOf('clientes');
