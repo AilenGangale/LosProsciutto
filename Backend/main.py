@@ -162,22 +162,51 @@ def nueva_orden(cliente_id, sabor_id):
         return jsonify({"mensaje": "Error interno del servidor."}), 500
 
 #Permite modificar una orden. Primero la busca por su id, luego obtiene los datos de la solicitud. Actualiza los campos si se proporcionaron nuevos datos, guarda los cambios y devuelve la información actualizada de la orden.
+# @app.route('/ordenes/<id_orden>', methods=['PUT'])
+# def actualizar_orden(id_orden):
+#     try:
+#         orden = Orden.query.get(id_orden)
+#         if not orden:
+#             return jsonify({"error": "Orden no encontrada"}), 404
+
+#         data = request.json
+#         nuevo_estado = data.get("estado")
+#         nuevo_costo_total = data.get("costo_total")
+#         nueva_pizza_id = data.get("pizza_id")
+
+#         if nuevo_estado:
+#             orden.estado = nuevo_estado
+#         if nuevo_costo_total is not None:
+#             orden.costo_total = nuevo_costo_total
+#         if nueva_pizza_id:
+#             nueva_pizza = Pizza.query.get(nueva_pizza_id)
+#             if nueva_pizza:
+#                 orden.pizza_id = nueva_pizza_id
+#             else:
+#                 return jsonify({"error": "Pizza no encontrada"}), 404
+
+#         db.session.commit()
+
+#         orden_data = {
+#             "id": orden.id,
+#             "pizza_id": orden.pizza_id,
+#             "costo_total": orden.costo_total,
+#             "estado": orden.estado
+#         }
+#         return jsonify(orden_data), 200
+#     except Exception as error:
+#         print(error)
+#         return jsonify({"error": "No se pudo actualizar la orden"}), 500
+
 @app.route('/ordenes/<id_orden>', methods=['PUT'])
 def actualizar_orden(id_orden):
     try:
         orden = Orden.query.get(id_orden)
         if not orden:
             return jsonify({"error": "Orden no encontrada"}), 404
-
         data = request.json
-        nuevo_estado = data.get("estado")
-        nuevo_costo_total = data.get("costo_total")
         nueva_pizza_id = data.get("pizza_id")
 
-        if nuevo_estado:
-            orden.estado = nuevo_estado
-        if nuevo_costo_total is not None:
-            orden.costo_total = nuevo_costo_total
         if nueva_pizza_id:
             nueva_pizza = Pizza.query.get(nueva_pizza_id)
             if nueva_pizza:
@@ -197,6 +226,27 @@ def actualizar_orden(id_orden):
     except Exception as error:
         print(error)
         return jsonify({"error": "No se pudo actualizar la orden"}), 500
+
+# Primero busca la orden por su ID y luego la elimina
+@app.route('/ordenes/<id_orden>', methods=['DELETE'])
+def eliminar_orden(id_orden):
+    try:
+        # Buscar la orden por ID
+        orden = Orden.query.get(id_orden)
+        if not orden:
+            return jsonify({"error": "Orden no encontrada"}), 404
+
+        # Eliminar la orden
+        db.session.delete(orden)
+        db.session.commit()
+
+        return jsonify({"success": True, "message": "Orden eliminada con éxito"}), 200
+
+    except Exception as e:
+        print(f"Error al eliminar la orden: {e}")
+        db.session.rollback()  # Deshacer cualquier cambio en caso de error
+        return jsonify({"success": False, "error": "Error al eliminar la orden"}), 500
+
 
 
 #dado el id de la orden que le llega por parámetro busca la orden en la base de datos, busca el cliente en la base de datos y busca la pizza en la base de datos. Tiene 3 variables, hace los cambios necesarios (si recibió la orden le resto plata y pongo que la pizza está entregada). Luego se añaden esas cosas a la sesión y commiteamos. Devolvemos como retorno del post la nueva plata del cliente para poder actualizar dinámicamente la página
