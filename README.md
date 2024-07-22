@@ -1,5 +1,17 @@
-# LosProsciutto
+# Papas Pizza - Grupo: Los Prosciutto
 Tp/final de introduccion al software
+
+## Descripción
+
+Es una aplicación web desarrollada con Flask para gestionar clientes y órdenes de pizza. Se pueden crear nuevos clientes, realizar pedidos de pizzas y gestionar las órdenes existentes. Utiliza una base de datos PostgreSQL para almacenar la información de clientes, pizzas y órdenes.
+
+## Características
+
+- Gestión de Clientes
+  - Crear, editar y eliminar clientes.
+- Gestión de Órdenes
+  - Crear, ver, cancelar y retirar órdenes de pizza.
+
 # Instalar python utltima version
 sudo apt install python3
 
