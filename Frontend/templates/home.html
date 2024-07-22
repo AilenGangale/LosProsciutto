@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icono.png') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Ordenes</title>
     <style>
         
         body {
@@ -47,6 +49,9 @@
             cursor: pointer;
             border-radius: 5px;
         }
+        i{
+            padding-left: 5px;
+        }
     </style>
 </head>
 <body>
@@ -55,8 +60,8 @@
     <div id="clientes">
         <img src="{{ url_for('static', filename='images/logo_pizza.png') }}">   <!--  alt="Logo de Papas's Pizza" -->
         <div id="botones">
-            <button onclick="nuevoUsuario()">Nuevo cliente</button>
-            <button onclick="usuarioExistente()">Clientes existentes</button>
+            <button onclick="nuevoUsuario()">Nuevo cliente <i class="fa-solid fa-user-plus" ></i></button>
+            <button onclick="usuarioExistente()">Clientes existentes <i class="fa-solid fa-user-group"id="clientes_boton"></i></button>
         </div>
     </div>
 

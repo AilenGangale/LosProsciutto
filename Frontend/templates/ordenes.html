@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Título de la Página</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Ordenes</title>
 
     <style>
         body {
@@ -40,7 +41,7 @@
         .nuevo-boton {
             margin: 0 10px;
             padding: 10px 20px;
-            font-size: 16px;
+            font-size: 20px;
             background-color: #fa8f9f;
             color: white;
             border: none;
@@ -133,14 +134,34 @@
         .boton-acciones:hover {
             background-color: #ef5350; 
         }
+        i{
+            padding-left: 5px;
+        }
+
+        #clientes{
+            padding-left: 5px;
+
+        }
+        #cheese{
+            color: #FFD700;
+            
+        }
+
+        #cebolla{
+            color:bisque;
+        }
+
+        #morron{
+            color:rgb(221, 30, 30);
+        }
     </style>
 </head>
 <div class="container">
     <h1>Órdenes del Cliente {{ cliente.nombre }}</h1>
     <div class="botones-sabor">
-        <button class="nuevo-boton" onclick="crearNuevaOrden(1)">Muzza</button>
-        <button class="nuevo-boton" onclick="crearNuevaOrden(2)">Fugazza</button>
-        <button class="nuevo-boton" onclick="crearNuevaOrden(3)">Morron</button>
+        <button class="nuevo-boton" onclick="crearNuevaOrden(1)">Muzzarella<i class="fa-solid fa-cheese" id="cheese"></i></button>
+        <button class="nuevo-boton" onclick="crearNuevaOrden(2)">Fugazzeta<i class="fa-solid fa-stroopwafel" id = "cebolla"></i></button>
+        <button class="nuevo-boton" onclick="crearNuevaOrden(3)">Morron<i class="fa-solid fa-bacon" id = "morron" ></i></button>
     </div>
     <div class="fichas-container" id="fichas-container">
         {% if ordenes %}
@@ -165,7 +186,7 @@
             <p>No hay órdenes para este cliente.</p>
         {% endif %}
     </div>
-    <button class="nuevo-boton" onclick="volverAlInicio()">Volver a clientes</button>
+    <button class="nuevo-boton" onclick="volverAlInicio()"> <i class="fa-solid fa-user-group"id="clientes"></i> Volver a clientes</button>
 </div>
 
 <script>
