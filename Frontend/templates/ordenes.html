@@ -230,13 +230,17 @@
         <button class="nuevo-boton" id="boton-inicio" onclick="volverAlInicio()"> <i class="fa-solid fa-house" id="home"></i> Volver al inicio</button>
     </div>
 <script>
-
+    // Redirige al usuario a la página de clientes (/clientes) cuando se llama a esta función. 
     function volverAClientes(){
         window.location.href = "/clientes";
     }
+
+    // Redirige al usuario a la página de inicio (/) cuando se llama a esta función.
     function volverAlInicio(){
         window.location.href = "/";
     }
+
+    // Extrae el ID del cliente de la URL actual. Divide la URL en partes usando / como separador y busca la posición de clientes para obtener el siguiente segmento, que debería ser el ID del cliente.
     function getClienteIdFromPath() {
         const pathArray = window.location.pathname.split('/');
         const clienteIndex = pathArray.indexOf('clientes');
@@ -246,10 +250,12 @@
         return null;
     }
     
+    // Convierte la respuesta de una solicitud fetch en formato JSON.
     function response_received(response) {
         return response.json();
     }
 
+    // Maneja errores de solicitudes fetch. Imprime un mensaje de error y, si hay una respuesta con texto, la muestra en la consola. 
     function request_error(error) {
         console.log("ERROR");
         console.log(error);
@@ -258,6 +264,7 @@
         }
     }
 
+    // Muestra una lista de órdenes en la página. Crea elementos div para cada orden y los agrega al contenedor con el ID fichas-container. Si no hay órdenes, muestra un mensaje indicando que no hay órdenes para el cliente.
     function mostrar_ordenes(ordenes) {
         const container = document.getElementById('fichas-container');
         container.innerHTML = ''; // Limpiar el contenedor
@@ -285,6 +292,7 @@
         }
     }
 
+    // Realiza una solicitud fetch para obtener las órdenes del cliente con el ID proporcionado. Usa el cliente_id para construir la URL de la solicitud y llama a mostrar_ordenes con la respuesta obtenida.
     function cargar_ordenes_cliente(cliente_id) {
         fetch(`/clientes/${cliente_id}/ordenes`)
             .then(response_received)
@@ -292,6 +300,7 @@
             .catch(request_error);
     }
 
+    // Crea una nueva orden para el cliente actual con el número de pizza proporcionado. Realiza una solicitud POST a la URL correspondiente y, si la orden se crea correctamente, recarga la página después de un breve retraso. Muestra un mensaje de error si no se puede crear la orden, por ejemplo, si el cliente no tiene suficiente dinero.
     function crearNuevaOrden(numeroPizza) {
         const clienteId = getClienteIdFromPath();
         if (!clienteId) {
@@ -324,6 +333,7 @@
             });
     }
 
+    // Elimina una orden con el ID proporcionado si el usuario confirma la acción. Realiza una solicitud DELETE para eliminar la orden y recarga la página si la solicitud es exitosa. Muestra un mensaje de error en caso de que la eliminación falle.
     function eliminarOrden(ordenId) {
         if (confirm("¿Estás seguro de que deseas eliminar esta orden?")) {
             fetch(`/ordenes/${ordenId}`, { method: 'DELETE' })
@@ -342,6 +352,7 @@
         }
     }
 
+    // Intenta retirar una orden si la fecha actual es posterior a la fecha de entrega. Convierte la fechaEntrega a un objeto Date, compara con la fecha actual, y si es apropiado, realiza una solicitud DELETE para retirar la orden. Muestra alertas con mensajes sobre el éxito o fracaso de la operación.
     function retirarOrden(ordenId, fechaEntrega) {
     // Convertir la fecha de entrega a un objeto Date
     const fechaEntregaDate = new Date(fechaEntrega);
@@ -376,9 +387,6 @@
         alert("No se puede retirar la orden antes de la fecha de entrega.");
     }
 }
-
-
-
 
     const cliente_id = getClienteIdFromPath();
 
