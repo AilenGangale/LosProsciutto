@@ -28,6 +28,7 @@ sudo apt install python3
 ### Clonación del Repositorio
 
 git clone https://github.com/AilenGangale/LosProsciutto.git
+
 cd LosProsciutto
 
 ### Configuración del entorno virtual
@@ -43,8 +44,11 @@ source venv/bin/activate
 ### Instalar Flask y demás dependencias
 
 pip install flask
+
 pip install Flask-SQLAlchemy
+
 pip install flask-cors
+
 pip install psycopg2
 
 ### Instalar Postgres
