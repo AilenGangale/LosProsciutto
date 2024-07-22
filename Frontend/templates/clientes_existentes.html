@@ -161,18 +161,20 @@
             '../static/images/clientes/cliente_10.png'
         ];
 
-        function asignarImagenesAleatorias() {
-            const imagenesShuffled = imagenes.sort(() => 0.5 - Math.random());
-            const imagenesAsignadas = imagenesShuffled.slice(0, document.querySelectorAll('.imagen-cliente').length);
+        function asignarImagenesEnOrden() {
+            const imagenesAsignadas = imagenes.slice(0, document.querySelectorAll('.imagen-cliente').length);
+
             document.querySelectorAll('.imagen-cliente').forEach((img, index) => {
-                img.src = imagenesAsignadas[index];
-                console.log(`Asignada ${imagenesAsignadas[index]} a ${img.alt}`);
+                if (index < imagenesAsignadas.length) {
+                    img.src = imagenesAsignadas[index];
+                    console.log(`Asignada ${imagenesAsignadas[index]} a ${img.alt}`);
+                }
             });
         }
 
 
         document.addEventListener('DOMContentLoaded', () => {
-            asignarImagenesAleatorias();
+            asignarImagenesEnOrden();
         });
 
         function Ordenes(clienteId) {
