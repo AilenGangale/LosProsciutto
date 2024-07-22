@@ -340,7 +340,7 @@ def actualizar_orden(id_orden):
         print(error)
         return jsonify({"error": "No se pudo actualizar la orden"}), 500
 
-# Primero busca la orden por su ID y luego la elimina
+# Primero busca la orden por su ID y luego la elimina, le devuelve la plata al cliente.
 @app.route('/ordenes/<id_orden>', methods=['DELETE'])
 def eliminar_orden(id_orden):
     try:
@@ -349,11 +349,24 @@ def eliminar_orden(id_orden):
         if not orden:
             return jsonify({"error": "Orden no encontrada"}), 404
 
+        # Obtener el cliente y la pizza correspondientes
+        cliente = Cliente.query.get(orden.cliente_id)
+        pizza = Pizza.query.get(orden.pizza_id)
+        
+        if not cliente:
+            return jsonify({"error": "Cliente no encontrado"}), 404
+
+        if not pizza:
+            return jsonify({"error": "Pizza no encontrada"}), 404
+
+        # Devolver el dinero al cliente
+        cliente.plata += pizza.costo_pizza
+
         # Eliminar la orden
         db.session.delete(orden)
         db.session.commit()
 
-        return jsonify({"success": True, "message": "Orden eliminada con éxito"}), 200
+        return jsonify({"success": True, "message": "Orden eliminada con éxito", "nueva_plata": cliente.plata}), 200
 
     except Exception as e:
         print(f"Error al eliminar la orden: {e}")
