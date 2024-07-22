@@ -285,23 +285,6 @@
         }
     }
 
-    function retirarOrden(ordenId, fechaEntrega) {
-    fetch(`/retirar/${ordenId}`, { method: 'DELETE' })
-        .then(response => response.json())
-        .then(data => {
-            if (data.plata_cliente !== undefined) {
-                alert(data.mensaje);
-                document.querySelector('h2').innerText = `Tenes $ ${data.plata_cliente}`;
-                window.location.reload();
-            } else {
-                alert(data.mensaje);
-            }
-        })
-        .catch(error => {
-            console.error("ERROR:", error);
-            alert("No se pudo retirar la orden.");
-        });}
-
     function cargar_ordenes_cliente(cliente_id) {
         fetch(`/clientes/${cliente_id}/ordenes`)
             .then(response_received)
@@ -358,6 +341,42 @@
                 });
         }
     }
+
+    function retirarOrden(ordenId, fechaEntrega) {
+    // Convertir la fecha de entrega a un objeto Date
+    const fechaEntregaDate = new Date(fechaEntrega);
+    
+    // Obtener la fecha actual
+    const fechaActual = new Date();
+
+    // Imprimir las fechas para depuración
+    console.log("Fecha de Entrega:", fechaEntregaDate);
+    console.log("Fecha Actual:", fechaActual);
+
+    // Comparar fechas
+    if (fechaActual > fechaEntregaDate) {
+        // Si la fecha actual es posterior a la fecha de entrega, proceder con el DELETE
+        fetch(`/retirar/${ordenId}`, { method: 'DELETE' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.mensaje) {
+                    alert(data.mensaje);
+                    // Recargar la página para actualizar la vista
+                    window.location.reload();
+                } else {
+                    alert("No se pudo retirar la orden.");
+                }
+            })
+            .catch(error => {
+                console.error("ERROR:", error);
+                alert("No se pudo retirar la orden.");
+            });
+    } else {
+        // Si la fecha actual no es posterior a la fecha de entrega, mostrar un mensaje
+        alert("No se puede retirar la orden antes de la fecha de entrega.");
+    }
+}
+
 
 
 
