@@ -35,6 +35,6 @@ class Pizza(db.Model):
     sabor = db.Column(db.String(255), nullable=False)
     costo_pizza = db.Column(db.Integer, nullable=False)
     #Agrego tiempo de coccion comentado
-    tiempo_coccion = db.Column(db.Integer, nullable=False)
+    tiempo_coccion = db.Column(db.Float, nullable=False)
     
 

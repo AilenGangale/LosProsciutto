@@ -231,9 +231,18 @@ def nueva_orden(cliente_id, sabor_id):
         sabor = sabores.get(sabor_id)
         if not sabor:
             return jsonify({"mensaje": "Sabor no válido."}), 400
+        
+        if sabor == "Muzzarella":
+            costo_pizza= 200
+            tiempo_coccion= 0.5
+        elif sabor == "Fugazzeta":
+            costo_pizza= 400
+            tiempo_coccion= 0.6
+        else:
+            costo_pizza= 300
+            tiempo_coccion= 1
 
-        tiempo_coccion = 1
-        nueva_pizza = Pizza(sabor=sabor, costo_pizza=120, tiempo_coccion=1)
+        nueva_pizza = Pizza(sabor=sabor, costo_pizza=costo_pizza, tiempo_coccion=tiempo_coccion)
         
         if cliente.plata < nueva_pizza.costo_pizza:
             return jsonify({"mensaje": "No hay suficiente dinero."}), 400
