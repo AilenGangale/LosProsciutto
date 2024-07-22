@@ -175,7 +175,8 @@ def nueva_orden(cliente_id, sabor_id):
             return jsonify({"mensaje": "Sabor no válido."}), 400
 
         # Crear una nueva pizza
-        nueva_pizza = Pizza(sabor=sabor, costo_pizza=120, tiempo_coccion=1)  # Tiempo de cocción en minutos
+        tiempo_coccion = 1  # Tiempo de cocción en minutos
+        nueva_pizza = Pizza(sabor=sabor, costo_pizza=120, tiempo_coccion=tiempo_coccion)
         
         # Chequear si el cliente tiene suficiente dinero
         if cliente.plata < nueva_pizza.costo_pizza:
@@ -185,18 +186,23 @@ def nueva_orden(cliente_id, sabor_id):
         db.session.add(nueva_pizza)
         db.session.commit()
 
+        # Calcular la fecha de entrega
+        fecha_creacion = datetime.datetime.now()
+        fecha_entrega = fecha_creacion + datetime.timedelta(minutes=tiempo_coccion)
+
         # Crear una nueva orden con la nueva pizza
         nueva_orden = Orden(
             cliente_id=cliente_id,
             pizza_id=nueva_pizza.id,
             costo_total=nueva_pizza.costo_pizza,
             estado="Pendiente",
-            tiempo_coccion=nueva_pizza.tiempo_coccion
+            fecha_creacion=fecha_creacion,
+            fecha_entrega=fecha_entrega
         )
 
         # Reducir el dinero del cliente
         cliente.plata -= nueva_pizza.costo_pizza
-        db.session.add(cliente)  # Asegúrate de añadir el cliente a la sesión
+        db.session.add(cliente)
         
         db.session.add(nueva_orden)
         db.session.commit()
@@ -206,6 +212,8 @@ def nueva_orden(cliente_id, sabor_id):
             "pizza_id": nueva_orden.pizza_id,
             "costo_total": nueva_orden.costo_total,
             "estado": nueva_orden.estado,
+            "fecha_creacion": nueva_orden.fecha_creacion,
+            "fecha_entrega": nueva_orden.fecha_entrega,
             "tiempo_coccion": nueva_pizza.tiempo_coccion  # Añadido tiempo de cocción
         }}), 200
 
