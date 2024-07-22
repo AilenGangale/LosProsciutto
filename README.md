@@ -30,23 +30,31 @@ sudo apt install python3
 git clone https://github.com/AilenGangale/LosProsciutto.git
 cd LosProsciutto
 
-## Configuración del entorno virtual
+### Configuración del entorno virtual
 
-### Crear Entorno virtual
+#### Crear Entorno virtual
 
 python3 -m venv venv
 
-### Activar Entorno virtual
+#### Activar Entorno virtual
 
 source venv/bin/activate
 
-
-## Instalar Flask y demás dependencias
+### Instalar Flask y demás dependencias
 
 pip install flask
-pip install Flask Flask-SQLAlchemy
+pip install Flask-SQLAlchemy
 pip install flask-cors
 pip install psycopg2
 
 ### Instalar Postgres
+
 sudo apt install postgresql postgresql-contrib
+
+## Uso
+
+### Iniciar el servidor
+
+python3 main.py
+
+La aplicación estará disponible en http://localhost:8000.
