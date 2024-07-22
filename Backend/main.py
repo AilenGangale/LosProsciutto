@@ -161,6 +161,65 @@ def all_ordenes(id_cliente):
 #     except Exception as e:
 #         print(f"Error interno del servidor: {e}")
 #         return jsonify({"mensaje": "Error interno del servidor."}), 500
+# @app.route('/clientes/<int:cliente_id>/nueva_orden/<int:sabor_id>', methods=['POST'])
+# def nueva_orden(cliente_id, sabor_id):
+#     try:
+#         cliente = Cliente.query.get(cliente_id)
+#         if not cliente:
+#             return jsonify({"mensaje": "Cliente no encontrado."}), 404
+
+#         # Asignar sabor según el número
+#         sabores = {1: "Muzzarella", 2: "Fugazzeta", 3: "Jamón y Morrón"}
+#         sabor = sabores.get(sabor_id)
+#         if not sabor:
+#             return jsonify({"mensaje": "Sabor no válido."}), 400
+
+#         # Crear una nueva pizza
+#         tiempo_coccion = 1  # Tiempo de cocción en minutos
+#         nueva_pizza = Pizza(sabor=sabor, costo_pizza=120, tiempo_coccion=tiempo_coccion)
+        
+#         # Chequear si el cliente tiene suficiente dinero
+#         if cliente.plata < nueva_pizza.costo_pizza:
+#             return jsonify({"mensaje": "No hay suficiente dinero."}), 400
+        
+#         # Agregar la pizza a la base de datos
+#         db.session.add(nueva_pizza)
+#         db.session.commit()
+
+#         # Calcular la fecha de entrega
+#         fecha_creacion = datetime.datetime.now()
+#         fecha_entrega = fecha_creacion + datetime.timedelta(minutes=tiempo_coccion)
+
+#         # Crear una nueva orden con la nueva pizza
+#         nueva_orden = Orden(
+#             cliente_id=cliente_id,
+#             pizza_id=nueva_pizza.id,
+#             costo_total=nueva_pizza.costo_pizza,
+#             estado="Pendiente",
+#             fecha_creacion=fecha_creacion,
+#             fecha_entrega=fecha_entrega
+#         )
+
+#         # Reducir el dinero del cliente
+#         cliente.plata -= nueva_pizza.costo_pizza
+#         db.session.add(cliente)
+        
+#         db.session.add(nueva_orden)
+#         db.session.commit()
+
+#         return jsonify({"orden": {
+#             "id": nueva_orden.id,
+#             "pizza_id": nueva_orden.pizza_id,
+#             "costo_total": nueva_orden.costo_total,
+#             "estado": nueva_orden.estado,
+#             "fecha_creacion": nueva_orden.fecha_creacion,
+#             "fecha_entrega": nueva_orden.fecha_entrega,
+#             "tiempo_coccion": nueva_pizza.tiempo_coccion  # Añadido tiempo de cocción
+#         }}), 200
+
+#     except Exception as e:
+#         print(f"Error interno del servidor: {e}")
+#         return jsonify({"mensaje": "Error interno del servidor."}), 500
 @app.route('/clientes/<int:cliente_id>/nueva_orden/<int:sabor_id>', methods=['POST'])
 def nueva_orden(cliente_id, sabor_id):
     try:
@@ -168,29 +227,25 @@ def nueva_orden(cliente_id, sabor_id):
         if not cliente:
             return jsonify({"mensaje": "Cliente no encontrado."}), 404
 
-        # Asignar sabor según el número
         sabores = {1: "Muzzarella", 2: "Fugazzeta", 3: "Jamón y Morrón"}
         sabor = sabores.get(sabor_id)
         if not sabor:
             return jsonify({"mensaje": "Sabor no válido."}), 400
 
-        # Crear una nueva pizza
-        tiempo_coccion = 1  # Tiempo de cocción en minutos
-        nueva_pizza = Pizza(sabor=sabor, costo_pizza=120, tiempo_coccion=tiempo_coccion)
+        tiempo_coccion = 1
+        nueva_pizza = Pizza(sabor=sabor, costo_pizza=120, tiempo_coccion=1)
         
-        # Chequear si el cliente tiene suficiente dinero
         if cliente.plata < nueva_pizza.costo_pizza:
             return jsonify({"mensaje": "No hay suficiente dinero."}), 400
         
-        # Agregar la pizza a la base de datos
         db.session.add(nueva_pizza)
         db.session.commit()
 
-        # Calcular la fecha de entrega
+        print(f"Tiempo de cocción: {nueva_pizza.tiempo_coccion}")
+
         fecha_creacion = datetime.datetime.now()
         fecha_entrega = fecha_creacion + datetime.timedelta(minutes=tiempo_coccion)
 
-        # Crear una nueva orden con la nueva pizza
         nueva_orden = Orden(
             cliente_id=cliente_id,
             pizza_id=nueva_pizza.id,
@@ -200,10 +255,8 @@ def nueva_orden(cliente_id, sabor_id):
             fecha_entrega=fecha_entrega
         )
 
-        # Reducir el dinero del cliente
         cliente.plata -= nueva_pizza.costo_pizza
         db.session.add(cliente)
-        
         db.session.add(nueva_orden)
         db.session.commit()
 
@@ -212,9 +265,9 @@ def nueva_orden(cliente_id, sabor_id):
             "pizza_id": nueva_orden.pizza_id,
             "costo_total": nueva_orden.costo_total,
             "estado": nueva_orden.estado,
-            "fecha_creacion": nueva_orden.fecha_creacion,
-            "fecha_entrega": nueva_orden.fecha_entrega,
-            "tiempo_coccion": nueva_pizza.tiempo_coccion  # Añadido tiempo de cocción
+            "fecha_creacion": nueva_orden.fecha_creacion.isoformat(),
+            "fecha_entrega": nueva_orden.fecha_entrega.isoformat(),
+            "tiempo_coccion": nueva_pizza.tiempo_coccion
         }}), 200
 
     except Exception as e:
