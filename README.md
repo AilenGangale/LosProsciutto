@@ -2,6 +2,12 @@
 
 Tp/final de introduccion al software
 
+Integrantes:
+
+- Gangale, Ailen Agostina
+- Gastón, Mariano Ezequiel
+- Nieves, Maylen
+
 ## Descripción
 
 Es una aplicación web desarrollada con Flask para gestionar clientes y órdenes de pizza. Se pueden crear nuevos clientes, realizar pedidos de pizzas y gestionar las órdenes existentes. Utiliza una base de datos PostgreSQL para almacenar la información de clientes, pizzas y órdenes.
