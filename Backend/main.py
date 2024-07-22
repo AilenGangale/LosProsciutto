@@ -365,19 +365,33 @@ def eliminar_orden(id_orden):
 #dado el id de la orden que le llega por parámetro busca la orden en la base de datos, busca el cliente en la base de datos y busca la pizza en la base de datos. Tiene 3 variables, hace los cambios necesarios (si recibió la orden le resto plata y pongo que la pizza está entregada). Luego se añaden esas cosas a la sesión y commiteamos. Devolvemos como retorno del post la nueva plata del cliente para poder actualizar dinámicamente la página
 @app.route("/retirar/<id_orden>", methods=['POST'])
 def retirar_orden(id_orden):
-	try:
-		orden = Orden.query.get(id_orden)
-		cliente = Cliente.query.get(orden.cliente_id)
-		pizza = Pizza.query.get(orden.pizza_id)
-		
-		db.session.add(orden)
-		db.session.add(cliente)
-		db.session.commit()
-		
-		return jsonify({'nueva_plata': cliente.plata}),201
-	except Exception as error:
-		print(error)
-		return jsonify({"mensaje": "No se pudo retirar la orden."}),500
+    try:
+        # orden = Orden.query.get(id_orden)
+        # cliente = Cliente.query.get(orden.cliente_id)
+        # pizza = Pizza.query.get(orden.pizza_id)
+        
+        orden = Orden.query.get(id_orden)
+        if not orden:
+            return jsonify({"mensaje": "Orden no encontrada."}), 404
+
+        cliente = Cliente.query.get(orden.cliente_id)
+        if not cliente:
+            return jsonify({"mensaje": "Cliente no encontrado."}), 404
+
+        pizza = Pizza.query.get(orden.pizza_id)
+        if not pizza:
+            return jsonify({"mensaje": "Pizza no encontrada."}), 404
+        
+        orden.estado = "Entregada"
+
+        db.session.add(orden)
+        db.session.add(cliente)
+        db.session.commit()
+
+        return jsonify({'mensaje': 'Orden marcada como entregada'}), 201
+    except Exception as error:
+        print(error)
+        return jsonify({"mensaje": "No se pudo retirar la orden."}),500
 
 @app.route('/nuevo_cliente')
 def nuevo_cliente_page():
