@@ -133,6 +133,7 @@
                         <div class="container-acciones">
                             <button class="order-btn" onclick="Ordenes({{ cliente.id }})">Orden</button>
                             <button class="delete-btn" onclick="deleteCliente({{ cliente.id }})">Eliminar</button>
+                            <button class="edit-btn" onclick="editarNombre({{ cliente.id }}, '{{ cliente.nombre }}')">Editar nombre</button>
                         </div>
                     </td>
                 </tr>
@@ -201,6 +202,31 @@
                 });
             }
         }
+        function editarNombre(clienteId, nombreActual) {
+        const nuevoNombre = prompt('Ingrese el nuevo nombre para el cliente:', nombreActual);
+        if (nuevoNombre && nuevoNombre !== nombreActual) {
+            fetch(`/clientes/${clienteId}/editar_nombre`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nombre: nuevoNombre })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Nombre del cliente actualizado exitosamente.');
+                    window.location.reload();
+                } else {
+                    alert('Error al actualizar el nombre del cliente.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al actualizar el nombre del cliente.');
+            });
+        }
+    }
     </script>
 </body>
 </html>

@@ -32,6 +32,11 @@
             margin-bottom: 20px;
         }
 
+        h2{
+            text-align:center;
+            font-size: 1.5em;
+        }
+
         .botones-sabor {
             display: flex;
             justify-content: center;
@@ -189,6 +194,7 @@
 </head>
     <div class="container">
         <h1>Órdenes del Cliente {{ cliente.nombre }}</h1>
+        <h2>Tenes $ {{ cliente.plata }}</h2>
         <div class="botones-sabor">
             <button class="nuevo-boton" onclick="crearNuevaOrden(1)">Muzzarella<i class="fa-solid fa-cheese" id="cheese"></i></button>
             <button class="nuevo-boton" onclick="crearNuevaOrden(2)">Fugazzeta<i class="fa-solid fa-stroopwafel" id = "cebolla"></i></button>
@@ -208,8 +214,9 @@
                             <div class="blanca"><p>Fecha de Entrega: {{ orden.fecha_entrega }}</p></div>
                         </div>
                         <div class="boton-container">
-                            <button class="boton-acciones">Editar</button>
-                            <button class="boton-acciones" onclick="eliminarOrden({{ orden.orden_id }})">Eliminar</button>
+                            <!-- <button class="boton-acciones">Editar</button> -->
+                            <button class="boton-acciones" onclick="eliminarOrden({{ orden.orden_id }})">Cancelar pedido</button>
+                            <button class="boton-acciones" onclick="retirarOrden({{ orden.orden_id }}, '{{ orden.fecha_entrega }}')">Retirar</button>
                         </div>
                     </div>
                 {% endfor %}
@@ -242,13 +249,6 @@
     function response_received(response) {
         return response.json();
     }
-
-    // function response_received(response) {
-    //     return response.text().then(text => {
-    //         console.log("Respuesta recibida:", text); // Imprime la respuesta para verificar su contenido
-    //         return JSON.parse(text); // Convierte el texto a JSON
-    //     });
-    // }
 
     function request_error(error) {
         console.log("ERROR");
@@ -284,6 +284,23 @@
             container.innerHTML = '<p>No hay órdenes para este cliente.</p>';
         }
     }
+
+    function retirarOrden(ordenId, fechaEntrega) {
+    fetch(`/retirar/${ordenId}`, { method: 'DELETE' })
+        .then(response => response.json())
+        .then(data => {
+            if (data.plata_cliente !== undefined) {
+                alert(data.mensaje);
+                document.querySelector('h2').innerText = `Tenes $ ${data.plata_cliente}`;
+                window.location.reload();
+            } else {
+                alert(data.mensaje);
+            }
+        })
+        .catch(error => {
+            console.error("ERROR:", error);
+            alert("No se pudo retirar la orden.");
+        });}
 
     function cargar_ordenes_cliente(cliente_id) {
         fetch(`/clientes/${cliente_id}/ordenes`)
