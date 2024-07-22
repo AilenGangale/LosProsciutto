@@ -1,4 +1,5 @@
 # Papas Pizza - Grupo: Los Prosciutto
+
 Tp/final de introduccion al software
 
 ## Descripción
@@ -12,23 +13,40 @@ Es una aplicación web desarrollada con Flask para gestionar clientes y órdenes
 - Gestión de Órdenes
   - Crear, ver, cancelar y retirar órdenes de pizza.
 
-# Instalar python utltima version
+## Tecnologías
+
+- Backend: Flask (Python)
+- Base de Datos: PostgreSQL
+- Frontend: HTML, CSS, JavaScript
+- ORM: SQLAlchemy
+
+## Instalación
+
+### Instalar python utltima version
 sudo apt install python3
 
-# Instalar Postgres
-sudo apt install postgresql postgresql-contrib
+### Clonación del Repositorio
 
-# Instalar entorno virtual
-sudo apt install python3.12-venv
+git clone https://github.com/AilenGangale/LosProsciutto.git
+cd LosProsciutto
 
-# Activar Entorno virtual
+## Configuración del entorno virtual
+
+### Crear Entorno virtual
+
 python3 -m venv venv
+
+### Activar Entorno virtual
+
 source venv/bin/activate
 
-# Instalar Flask
-pip install flask
 
-# Instalar sqlalchemy
+## Instalar Flask y demás dependencias
+
+pip install flask
 pip install Flask Flask-SQLAlchemy
 pip install flask-cors
 pip install psycopg2
+
+### Instalar Postgres
+sudo apt install postgresql postgresql-contrib
