@@ -244,17 +244,12 @@ def eliminar_orden(id_orden):
 
 
 
-#dado el id de la orden que le llega por parámetro busca la orden en la base de datos, busca el cliente en la base de datos y busca la pizza en la base de datos. Tiene 3 variables, hace los cambios necesarios (si recibió la orden le resto plata y pongo que la pizza está entregada). Luego se añaden esas cosas a la sesión y commiteamos. Devolvemos como retorno del post la nueva plata del cliente para poder actualizar dinámicamente la página
 @app.route("/retirar/<id_orden>", methods=['DELETE'])
 def retirar_orden(id_orden):
     try:
         orden = Orden.query.get(id_orden)
         if not orden:
             return jsonify({"mensaje": "Orden no encontrada."}), 404
-
-        now = datetime.now()
-        if now < orden.fecha_entrega:
-            return jsonify({"mensaje": "La orden no puede ser retirada antes de la fecha de entrega."}), 400
 
         cliente = Cliente.query.get(orden.cliente_id)
         if not cliente:
@@ -264,51 +259,18 @@ def retirar_orden(id_orden):
         if not pizza:
             return jsonify({"mensaje": "Pizza no encontrada."}), 404
 
-        # Marcar la orden como entregada y actualizar la plata del cliente
-        cliente.plata -= orden.costo_total
-        orden.estado = "Entregada"
-        
+        # Eliminar la orden y la pizza
         db.session.delete(orden)
         db.session.delete(pizza)
         db.session.commit()
 
         return jsonify({
-            'mensaje': f'Tu pizza de ID {orden.pizza_id} fue entregada.',
-            'plata_cliente': cliente.plata
+            'mensaje': f'Tu pizza de ID {orden.pizza_id} fue retirada y eliminada.',
         }), 200
 
     except Exception as error:
         print(error)
         return jsonify({"mensaje": "No se pudo retirar la orden."}), 500
-
-#@app.route('/ordenes/<id_orden>', methods=['PUT'])
-# def actualizar_orden(id_orden):
-#     try:
-#         orden = Orden.query.get(id_orden)
-#         if not orden:
-#             return jsonify({"error": "Orden no encontrada"}), 404
-#         data = request.json
-#         nueva_pizza_id = data.get("pizza_id")
-
-#         if nueva_pizza_id:
-#             nueva_pizza = Pizza.query.get(nueva_pizza_id)
-#             if nueva_pizza:
-#                 orden.pizza_id = nueva_pizza_id
-#             else:
-#                 return jsonify({"error": "Pizza no encontrada"}), 404
-
-#         db.session.commit()
-
-#         orden_data = {
-#             "id": orden.id,
-#             "pizza_id": orden.pizza_id,
-#             "costo_total": orden.costo_total,
-#             "estado": orden.estado
-#         }
-#         return jsonify(orden_data), 200
-#     except Exception as error:
-#         print(error)
-#         return jsonify({"error": "No se pudo actualizar la orden"}), 500
 
 if __name__ == '__main__':
     print("Starting server...")
