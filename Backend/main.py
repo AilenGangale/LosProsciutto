@@ -370,10 +370,6 @@ def retirar_orden(id_orden):
 		cliente = Cliente.query.get(orden.cliente_id)
 		pizza = Pizza.query.get(orden.pizza_id)
 		
-		#FALTAN UN MONTÓN DE CHEQUEOS (la granja tiene que estar lista para cosechar, la granja no tiene que ya estar cosechada)
-		cliente.plata -= pizza.costo_pizza
-		#orden.cosechada = True
-		
 		db.session.add(orden)
 		db.session.add(cliente)
 		db.session.commit()
