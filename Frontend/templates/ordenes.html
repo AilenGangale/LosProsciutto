@@ -147,6 +147,7 @@
                         <div class="rosa"><p>Costo Total: {{ orden.costo_total }}</p></div>
                         <div class="blanca"><p>Estado: {{ orden.estado }}</p></div>
                         <div class="rosa"><p>ID de Orden: {{ orden.orden_id }}</p></div>
+                        <div class="blanca"><p>Fecha de Entrega: {{ orden.fecha_entrega }}</p></div>
                     </div>
                     <button class="boton-eliminar" onclick="eliminarOrden({{ orden.orden_id }})">Eliminar</button>
                 </div>
@@ -176,6 +177,13 @@
         return response.json();
     }
 
+    // function response_received(response) {
+    //     return response.text().then(text => {
+    //         console.log("Respuesta recibida:", text); // Imprime la respuesta para verificar su contenido
+    //         return JSON.parse(text); // Convierte el texto a JSON
+    //     });
+    // }
+
     function request_error(error) {
         console.log("ERROR");
         console.log(error);
@@ -200,6 +208,7 @@
                         <div class="blanca"><p>ID de Orden: ${orden.pizza_id}</p></div>
                         <div class="rosa"><p>Costo Total: ${orden.costo_total}</p></div>
                         <div class="blanca"><p>Estado: ${orden.estado}</p></div>
+                        <div class="rosa"><p>Fecha de Entrega: ${orden.fecha_entrega}</p></div>
                     </div>
                 `;
 
