@@ -112,7 +112,13 @@
             font-size: 14px;
         }
 
-        .boton-eliminar {
+        .boton-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 10px 0;
+        }
+   
+        .boton-container .boton-acciones {
             margin: 10px 0;
             padding: 10px 20px;
             font-size: 16px;
@@ -124,7 +130,7 @@
             transition: background-color 0.3s ease;
         }
 
-        .boton-eliminar:hover {
+        .boton-acciones:hover {
             background-color: #ef5350; 
         }
     </style>
@@ -133,7 +139,7 @@
     <h1>Órdenes del Cliente {{ cliente.nombre }}</h1>
     <div class="botones-sabor">
         <button class="nuevo-boton" onclick="crearNuevaOrden(1)">Muzza</button>
-        <button class="nuevo-boton" onclick="crearNuevaOrden(2)">Faina</button>
+        <button class="nuevo-boton" onclick="crearNuevaOrden(2)">Fugazza</button>
         <button class="nuevo-boton" onclick="crearNuevaOrden(3)">Morron</button>
     </div>
     <div class="fichas-container" id="fichas-container">
@@ -149,7 +155,10 @@
                         <div class="rosa"><p>ID de Orden: {{ orden.orden_id }}</p></div>
                         <div class="blanca"><p>Fecha de Entrega: {{ orden.fecha_entrega }}</p></div>
                     </div>
-                    <button class="boton-eliminar" onclick="eliminarOrden({{ orden.orden_id }})">Eliminar</button>
+                    <div class="boton-container">
+                        <button class="boton-acciones">Editar</button>
+                        <button class="boton-acciones" onclick="eliminarOrden({{ orden.orden_id }})">Eliminar</button>
+                    </div>
                 </div>
             {% endfor %}
         {% else %}
